@@ -1851,7 +1851,7 @@ function quickIncrementSession(clientId) {
     month: activeMonth,
     quantity: 1,
     unitPrice: Number(defaultSt.price) || 0,
-    notes: 'Quick +1 session logged'
+    notes: ''
   });
 
   saveAndRefresh(`+1 ${defaultSt.name} logged for ${client.name} (${formatMonthDisplay(activeMonth)})`);
