@@ -1508,14 +1508,21 @@ async function renderInvoiceHtmlToPdfBlob(html) {
     throw new Error('PDF library is still loading or unavailable. Please check your internet connection and try again.');
   }
 
+  // Keep the invoice element itself static-positioned so html2pdf's internal cloner
+  // does not inherit position:fixed offsets that cause blank captures.
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText =
+    'position: absolute; left: 0; top: 0; width: 794px; background: #ffffff; z-index: 9999; pointer-events: none;';
+
   const container = document.createElement('div');
   container.className = 'invoice-paper';
   container.style.cssText =
-    'position: fixed; left: 0; top: 0; width: 794px; max-width: 794px; padding: 36px; background: #ffffff; border: none; box-shadow: none; z-index: 9999; pointer-events: none;';
+    'width: 794px; max-width: 794px; padding: 36px; background: #ffffff; color: #0f172a; border: none; box-shadow: none; margin: 0;';
   container.innerHTML = html;
-  document.body.appendChild(container);
 
-  // Wait for browser layout before html2canvas captures the element
+  wrapper.appendChild(container);
+  document.body.appendChild(wrapper);
+
   await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
   try {
@@ -1527,15 +1534,14 @@ async function renderInvoiceHtmlToPdfBlob(html) {
         useCORS: true,
         logging: false,
         scrollX: 0,
-        scrollY: 0,
-        windowWidth: 794
+        scrollY: 0
       },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
     const blob = await window.html2pdf().set(opt).from(container).outputPdf('blob');
     return blob;
   } finally {
-    container.remove();
+    wrapper.remove();
   }
 }
 
