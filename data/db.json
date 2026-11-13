@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "lastUpdated": "2026-11-13T08:28:00.000Z",
+  "version": 2,
+  "lastUpdated": "2026-11-13T08:52:00.000Z",
   "businessProfile": {
     "name": "CM Care and Coaching",
     "tagline": "Personal Training & Holistic Fitness Coaching",
@@ -51,139 +51,313 @@
   "clients": [
     {
       "id": "cl_1",
-      "name": "Sarah Jenkins",
-      "email": "sarah.jenkins@example.co.uk",
-      "phone": "07700 900456",
-      "address": "14 Oakwood Avenue, Bristol, BS8 2AA",
-      "defaultSessionTypeId": "st_1",
+      "name": "Margot",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
       "status": "active",
-      "notes": "Focusing on progressive strength training and core stability.",
-      "createdAt": "2026-09-01T10:00:00.000Z"
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
     },
     {
       "id": "cl_2",
-      "name": "David Miller",
-      "email": "d.miller@example.co.uk",
-      "phone": "07700 900789",
-      "address": "82 Park Lane, Clifton, BS8 1JR",
-      "defaultSessionTypeId": "st_1",
+      "name": "Nesta",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
       "status": "active",
-      "notes": "Half-marathon prep and mobility work.",
-      "createdAt": "2026-09-15T10:00:00.000Z"
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
     },
     {
       "id": "cl_3",
-      "name": "Emma Thompson",
-      "email": "emma.t@example.co.uk",
-      "phone": "07700 900321",
-      "address": "5 Harbourside View, BS1 5TY",
-      "defaultSessionTypeId": "st_2",
+      "name": "Hen",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
       "status": "active",
-      "notes": "Twice-weekly lunchtime express sessions.",
-      "createdAt": "2026-10-01T10:00:00.000Z"
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_4",
+      "name": "Kath",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_5",
+      "name": "Jill",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_6",
+      "name": "Sara M",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_7",
+      "name": "Christine & Chris",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_8",
+      "name": "Lynne",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_9",
+      "name": "Nicola",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_10",
+      "name": "Harri",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_11",
+      "name": "Ali & James",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_12",
+      "name": "Richard Pilkington",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_13",
+      "name": "Liz S",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_14",
+      "name": "Tash",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_15",
+      "name": "Rach & Rosie",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_16",
+      "name": "Mikey",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_17",
+      "name": "Sara H",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_18",
+      "name": "Marian",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_19",
+      "name": "Briony & Amos",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_20",
+      "name": "Lucy",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_21",
+      "name": "Peter",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_22",
+      "name": "Richard Banham",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_23",
+      "name": "Anne",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_24",
+      "name": "Lady Valerie",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_25",
+      "name": "Fiona",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_26",
+      "name": "David",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_27",
+      "name": "Karen",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_28",
+      "name": "Graham",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "",
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T08:52:00.000Z"
     }
   ],
-  "sessions": [
-    {
-      "id": "ses_101",
-      "clientId": "cl_1",
-      "sessionTypeId": "st_1",
-      "date": "2026-10-06",
-      "month": "2026-10",
-      "quantity": 1,
-      "unitPrice": 45.0,
-      "notes": "Upper body strength & shoulder mobility"
-    },
-    {
-      "id": "ses_102",
-      "clientId": "cl_1",
-      "sessionTypeId": "st_1",
-      "date": "2026-10-13",
-      "month": "2026-10",
-      "quantity": 1,
-      "unitPrice": 45.0,
-      "notes": "Lower body compound lifts"
-    },
-    {
-      "id": "ses_103",
-      "clientId": "cl_1",
-      "sessionTypeId": "st_1",
-      "date": "2026-10-20",
-      "month": "2026-10",
-      "quantity": 1,
-      "unitPrice": 45.0,
-      "notes": "Deadlift progression & conditioning"
-    },
-    {
-      "id": "ses_104",
-      "clientId": "cl_2",
-      "sessionTypeId": "st_4",
-      "date": "2026-10-08",
-      "month": "2026-10",
-      "quantity": 1,
-      "unitPrice": 40.0,
-      "notes": "Initial gait & movement assessment"
-    },
-    {
-      "id": "ses_105",
-      "clientId": "cl_2",
-      "sessionTypeId": "st_1",
-      "date": "2026-10-15",
-      "month": "2026-10",
-      "quantity": 1,
-      "unitPrice": 45.0,
-      "notes": "Single-leg stability & tempo intervals"
-    },
-    {
-      "id": "ses_201",
-      "clientId": "cl_1",
-      "sessionTypeId": "st_1",
-      "date": "2026-11-03",
-      "month": "2026-11",
-      "quantity": 1,
-      "unitPrice": 45.0,
-      "notes": "Squat PB test and core circuit"
-    },
-    {
-      "id": "ses_202",
-      "clientId": "cl_1",
-      "sessionTypeId": "st_1",
-      "date": "2026-11-10",
-      "month": "2026-11",
-      "quantity": 1,
-      "unitPrice": 45.0,
-      "notes": "Pull-up progression & metabolic finisher"
-    },
-    {
-      "id": "ses_203",
-      "clientId": "cl_2",
-      "sessionTypeId": "st_1",
-      "date": "2026-11-05",
-      "month": "2026-11",
-      "quantity": 1,
-      "unitPrice": 45.0,
-      "notes": "Posterior chain & hip mobility"
-    },
-    {
-      "id": "ses_204",
-      "clientId": "cl_3",
-      "sessionTypeId": "st_2",
-      "date": "2026-11-04",
-      "month": "2026-11",
-      "quantity": 1,
-      "unitPrice": 28.0,
-      "notes": "Kettlebell conditioning"
-    },
-    {
-      "id": "ses_205",
-      "clientId": "cl_3",
-      "sessionTypeId": "st_2",
-      "date": "2026-11-11",
-      "month": "2026-11",
-      "quantity": 1,
-      "unitPrice": 28.0,
-      "notes": "Core & upper body circuit"
-    }
-  ],
+  "sessions": [],
   "invoiceOverrides": {}
 }

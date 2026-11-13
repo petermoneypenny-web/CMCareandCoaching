@@ -3,11 +3,42 @@
  * Supports LocalStorage persistence + GitHub Repository API Sync (data/db.json)
  */
 
-const STORAGE_KEY_DB = 'cm_coaching_db_v1';
+const STORAGE_KEY_DB = 'cm_coaching_db_v2';
 const STORAGE_KEY_GH = 'cm_coaching_gh_config_v1';
 
+const INITIAL_CLIENT_NAMES = [
+  'Margot',
+  'Nesta',
+  'Hen',
+  'Kath',
+  'Jill',
+  'Sara M',
+  'Christine & Chris',
+  'Lynne',
+  'Nicola',
+  'Harri',
+  'Ali & James',
+  'Richard Pilkington',
+  'Liz S',
+  'Tash',
+  'Rach & Rosie',
+  'Mikey',
+  'Sara H',
+  'Marian',
+  'Briony & Amos',
+  'Lucy',
+  'Peter',
+  'Richard Banham',
+  'Anne',
+  'Lady Valerie',
+  'Fiona',
+  'David',
+  'Karen',
+  'Graham'
+];
+
 const DEFAULT_SEED_DB = {
-  version: 1,
+  version: 2,
   lastUpdated: new Date().toISOString(),
   businessProfile: {
     name: 'CM Care and Coaching',
@@ -57,143 +88,18 @@ const DEFAULT_SEED_DB = {
       description: 'Movement screening, posture check, and programme design'
     }
   ],
-  clients: [
-    {
-      id: 'cl_1',
-      name: 'Sarah Jenkins',
-      email: 'sarah.jenkins@example.co.uk',
-      phone: '07700 900456',
-      address: '14 Oakwood Avenue, Bristol, BS8 2AA',
-      defaultSessionTypeId: 'st_1',
-      status: 'active',
-      notes: 'Focusing on progressive strength training and core stability.',
-      createdAt: '2026-09-01T10:00:00.000Z'
-    },
-    {
-      id: 'cl_2',
-      name: 'David Miller',
-      email: 'd.miller@example.co.uk',
-      phone: '07700 900789',
-      address: '82 Park Lane, Clifton, BS8 1JR',
-      defaultSessionTypeId: 'st_1',
-      status: 'active',
-      notes: 'Half-marathon prep and mobility work.',
-      createdAt: '2026-09-15T10:00:00.000Z'
-    },
-    {
-      id: 'cl_3',
-      name: 'Emma Thompson',
-      email: 'emma.t@example.co.uk',
-      phone: '07700 900321',
-      address: '5 Harbourside View, BS1 5TY',
-      defaultSessionTypeId: 'st_2',
-      status: 'active',
-      notes: 'Twice-weekly lunchtime express sessions.',
-      createdAt: '2026-10-01T10:00:00.000Z'
-    }
-  ],
-  sessions: [
-    {
-      id: 'ses_101',
-      clientId: 'cl_1',
-      sessionTypeId: 'st_1',
-      date: '2026-10-06',
-      month: '2026-10',
-      quantity: 1,
-      unitPrice: 45.0,
-      notes: 'Upper body strength & shoulder mobility'
-    },
-    {
-      id: 'ses_102',
-      clientId: 'cl_1',
-      sessionTypeId: 'st_1',
-      date: '2026-10-13',
-      month: '2026-10',
-      quantity: 1,
-      unitPrice: 45.0,
-      notes: 'Lower body compound lifts'
-    },
-    {
-      id: 'ses_103',
-      clientId: 'cl_1',
-      sessionTypeId: 'st_1',
-      date: '2026-10-20',
-      month: '2026-10',
-      quantity: 1,
-      unitPrice: 45.0,
-      notes: 'Deadlift progression & conditioning'
-    },
-    {
-      id: 'ses_104',
-      clientId: 'cl_2',
-      sessionTypeId: 'st_4',
-      date: '2026-10-08',
-      month: '2026-10',
-      quantity: 1,
-      unitPrice: 40.0,
-      notes: 'Initial gait & movement assessment'
-    },
-    {
-      id: 'ses_105',
-      clientId: 'cl_2',
-      sessionTypeId: 'st_1',
-      date: '2026-10-15',
-      month: '2026-10',
-      quantity: 1,
-      unitPrice: 45.0,
-      notes: 'Single-leg stability & tempo intervals'
-    },
-    {
-      id: 'ses_201',
-      clientId: 'cl_1',
-      sessionTypeId: 'st_1',
-      date: '2026-11-03',
-      month: '2026-11',
-      quantity: 1,
-      unitPrice: 45.0,
-      notes: 'Squat PB test and core circuit'
-    },
-    {
-      id: 'ses_202',
-      clientId: 'cl_1',
-      sessionTypeId: 'st_1',
-      date: '2026-11-10',
-      month: '2026-11',
-      quantity: 1,
-      unitPrice: 45.0,
-      notes: 'Pull-up progression & metabolic finisher'
-    },
-    {
-      id: 'ses_203',
-      clientId: 'cl_2',
-      sessionTypeId: 'st_1',
-      date: '2026-11-05',
-      month: '2026-11',
-      quantity: 1,
-      unitPrice: 45.0,
-      notes: 'Posterior chain & hip mobility'
-    },
-    {
-      id: 'ses_204',
-      clientId: 'cl_3',
-      sessionTypeId: 'st_2',
-      date: '2026-11-04',
-      month: '2026-11',
-      quantity: 1,
-      unitPrice: 28.0,
-      notes: 'Kettlebell conditioning'
-    },
-    {
-      id: 'ses_205',
-      clientId: 'cl_3',
-      sessionTypeId: 'st_2',
-      date: '2026-11-11',
-      month: '2026-11',
-      quantity: 1,
-      unitPrice: 28.0,
-      notes: 'Core & upper body circuit'
-    }
-  ],
+  clients: INITIAL_CLIENT_NAMES.map((name, idx) => ({
+    id: `cl_${idx + 1}`,
+    name,
+    email: '',
+    phone: '',
+    address: '',
+    defaultSessionTypeId: '',
+    status: 'active',
+    notes: '',
+    createdAt: '2026-11-13T08:52:00.000Z'
+  })),
+  sessions: [],
   invoiceOverrides: {}
 };
 
@@ -703,8 +609,7 @@ function renderTrackerView() {
           (sum, s) => sum + (Number(s.quantity) || 1) * (Number(s.unitPrice) || 0),
           0
         );
-        const defaultType =
-          getSessionTypeById(client.defaultSessionTypeId) || db.sessionTypes[0] || null;
+        const defaultType = getSessionTypeById(client.defaultSessionTypeId) || null;
 
         // Breakdown by session type
         const byType = {};
@@ -1407,9 +1312,11 @@ function openClientModal(clientId = null) {
   const title = document.getElementById('clientModalTitle');
   const defTypeSelect = document.getElementById('clientFormDefaultType');
 
-  defTypeSelect.innerHTML = db.sessionTypes
-    .map((st) => `<option value="${st.id}">${escapeHtml(st.name)} (${formatGBP(st.price)})</option>`)
-    .join('');
+  defTypeSelect.innerHTML =
+    `<option value="">— None —</option>` +
+    db.sessionTypes
+      .map((st) => `<option value="${st.id}">${escapeHtml(st.name)} (${formatGBP(st.price)})</option>`)
+      .join('');
 
   if (clientId) {
     const client = getClientById(clientId);
@@ -1420,17 +1327,14 @@ function openClientModal(clientId = null) {
     document.getElementById('clientFormEmail').value = client.email || '';
     document.getElementById('clientFormPhone').value = client.phone || '';
     document.getElementById('clientFormAddress').value = client.address || '';
-    document.getElementById('clientFormDefaultType').value =
-      client.defaultSessionTypeId || (db.sessionTypes[0]?.id ?? '');
+    document.getElementById('clientFormDefaultType').value = client.defaultSessionTypeId || '';
     document.getElementById('clientFormStatus').value = client.status || 'active';
     document.getElementById('clientFormNotes').value = client.notes || '';
   } else {
     title.textContent = 'Add New Client';
     document.getElementById('clientForm').reset();
     document.getElementById('clientFormId').value = '';
-    if (db.sessionTypes[0]) {
-      document.getElementById('clientFormDefaultType').value = db.sessionTypes[0].id;
-    }
+    document.getElementById('clientFormDefaultType').value = '';
     document.getElementById('clientFormStatus').value = 'active';
   }
 
