@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
   <div class="app-shell">
@@ -305,6 +308,24 @@
                   </button>
                   <button class="btn btn-secondary" id="saveInvoiceMetaBtn">Save Invoice Details</button>
                 </div>
+
+                <div style="margin-top: 1.35rem; padding-top: 1.1rem; border-top: 1px solid var(--border-color);">
+                  <div style="font-size: 0.84rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.25rem;">
+                    Batch Export All Month Invoices
+                  </div>
+                  <p id="batchExportSummary" style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                    Exports individual PDFs for all clients with sessions recorded this month.
+                  </p>
+                  <div style="display: flex; flex-direction: column; gap: 0.55rem;">
+                    <button class="btn btn-secondary" id="batchDownloadZipBtn">
+                      Download All as ZIP (Year/Month/*.pdf)
+                    </button>
+                    <button class="btn btn-success" id="batchUploadDriveBtn">
+                      Upload All to Google Drive (Year/Month/)
+                    </button>
+                  </div>
+                  <div id="batchProgressBox" style="display: none; margin-top: 0.75rem; font-size: 0.78rem; color: var(--text-secondary); background: var(--bg-subtle); padding: 0.6rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);"></div>
+                </div>
               </div>
             </div>
 
@@ -357,6 +378,40 @@
                   <button type="submit" class="btn btn-primary">Save GitHub Settings</button>
                   <button type="button" class="btn btn-success" id="settingsPushBtn">Push Database to GitHub Now</button>
                   <button type="button" class="btn btn-secondary" id="settingsPullBtn">Pull Latest from GitHub</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Google Drive Invoice Storage</h2>
+                <p class="card-subtitle">Upload monthly invoice PDFs directly into your Google Drive folder in a <code>Year / Month / Invoice.pdf</code> structure.</p>
+              </div>
+              <span class="badge badge-archived" id="gdriveStatusBadge">Not Configured</span>
+            </div>
+            <div class="card-body">
+              <form id="gdriveConfigForm">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="gdriveClientId">Google OAuth 2.0 Client ID</label>
+                    <input type="text" id="gdriveClientId" class="form-control" placeholder="1234567890-abc...apps.googleusercontent.com" />
+                    <small style="color: var(--text-muted); font-size: 0.76rem;">
+                      Create a Web Application OAuth Client ID in Google Cloud Console with <code>https://petermoneypenny-web.github.io</code> as an Authorized JavaScript Origin.
+                    </small>
+                  </div>
+                  <div class="form-group">
+                    <label for="gdriveRootFolderInput">Target Google Drive Folder URL or Folder ID</label>
+                    <input type="text" id="gdriveRootFolderInput" class="form-control" placeholder="Paste Google Drive folder link or ID (e.g. 1AbC...)" />
+                    <small style="color: var(--text-muted); font-size: 0.76rem;">
+                      Inside this folder, the app creates/uses <code>YYYY / MM - MonthName / Invoice.pdf</code>. Leave blank to auto-create <code>CM Care and Coaching Invoices</code> in My Drive.
+                    </small>
+                  </div>
+                </div>
+                <div class="filter-bar" style="margin-top: 0.5rem;">
+                  <button type="submit" class="btn btn-primary">Save Google Drive Settings</button>
+                  <button type="button" class="btn btn-success" id="gdriveConnectBtn">Connect &amp; Test Google Drive</button>
                 </div>
               </form>
             </div>

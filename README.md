@@ -46,3 +46,15 @@ To save updates directly back to `data/db.json` in your GitHub repository from t
    - **Repository permissions**: Set **Contents** to **Read and write**.
 3. Copy the generated token.
 4. Open the website, go to **Business & GitHub Sync**, paste the token into the **GitHub Personal Access Token** field, optionally enable **Automatically push changes to GitHub**, and click **Save GitHub Settings**.
+
+---
+
+## Setting Up Google Drive Invoice Storage (`Year / Month / Invoice.pdf`)
+
+1. Open [Google Cloud Console](https://console.cloud.google.com/), create (or select) a project, and enable the **Google Drive API**.
+2. Go to **APIs & Services &rarr; OAuth consent screen**, configure your app (External, Testing mode with your Google email added as a Test User).
+3. Go to **APIs & Services &rarr; Credentials &rarr; Create Credentials &rarr; OAuth client ID** (Application type: **Web application**).
+4. Under **Authorized JavaScript origins**, add `https://petermoneypenny-web.github.io`.
+5. Copy the generated **Client ID**, open the website's **Business & GitHub Sync** tab, paste it into **Google OAuth 2.0 Client ID**, and paste your existing Google Drive folder link (or ID) into **Target Google Drive Folder URL or Folder ID**.
+6. Click **Connect & Test Google Drive**. From **End-of-Month Invoices**, you can now click **Upload All to Google Drive (Year/Month/)** or **Download All as ZIP (Year/Month/*.pdf)**.
+

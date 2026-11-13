@@ -7,6 +7,7 @@ const STORAGE_KEY_DB = 'cm_coaching_db_v2';
 const STORAGE_KEY_BACKUPS = 'cm_coaching_db_backups_v1';
 const STORAGE_KEY_BACKUP_COUNTER = 'cm_coaching_db_change_count_v1';
 const STORAGE_KEY_GH = 'cm_coaching_gh_config_v1';
+const STORAGE_KEY_GDRIVE = 'cm_coaching_gdrive_config_v1';
 const MAX_BACKUPS = 5;
 const BACKUP_EVERY_N_CHANGES = 10;
 
@@ -123,6 +124,13 @@ let ghConfig = {
   lastSha: null
 };
 
+let gdriveConfig = {
+  clientId: '',
+  rootFolderInput: ''
+};
+let gdriveAccessToken = null;
+let gdriveTokenExpiresAt = 0;
+
 // Utility Functions
 function getCurrentYearMonth() {
   const now = new Date();
@@ -226,6 +234,7 @@ function base64ToUtf8(base64) {
 // Initialization & Data Loading
 async function initApp() {
   loadGitHubConfig();
+  loadGDriveConfig();
   await loadDatabase();
 
   // Set default active monthpicker
@@ -260,6 +269,36 @@ function saveGitHubConfig() {
   } catch (err) {
     console.warn('Could not save GitHub config:', err);
   }
+}
+
+function loadGDriveConfig() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_GDRIVE);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      gdriveConfig = { ...gdriveConfig, ...parsed };
+    }
+  } catch (err) {
+    console.warn('Could not read Google Drive config from localStorage:', err);
+  }
+}
+
+function saveGDriveConfig() {
+  try {
+    localStorage.setItem(STORAGE_KEY_GDRIVE, JSON.stringify(gdriveConfig));
+  } catch (err) {
+    console.warn('Could not save Google Drive config:', err);
+  }
+}
+
+function extractGoogleDriveFolderId(input) {
+  const trimmed = (input || '').trim();
+  if (!trimmed) return '';
+  const match = trimmed.match(/\/folders\/([a-zA-Z0-9_-]+)/);
+  if (match && match[1]) return match[1];
+  const idParamMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (idParamMatch && idParamMatch[1]) return idParamMatch[1];
+  return trimmed;
 }
 
 async function loadDatabase() {
@@ -1172,26 +1211,34 @@ function saveCurrentInvoiceMeta(silent = false) {
   }
 }
 
-function renderInvoicePreviewPaper() {
-  const clientId = document.getElementById('invoiceClientSelect').value;
-  const ym = document.getElementById('invoiceMonthSelect').value || activeMonth;
-  const displayMode = document.getElementById('invoiceDisplayMode').value;
+function buildInvoiceHtmlForClient(clientId, ym, options = {}) {
+  const key = `${clientId}_${ym}`;
+  const saved = (db.invoiceOverrides && db.invoiceOverrides[key]) || {};
+  const defaults = getEndOfMonthDates(ym);
+
+  const displayMode = options.displayMode || saved.displayMode || 'itemized';
   const invNumber =
-    document.getElementById('invoiceNumberInput').value || getDefaultInvoiceNumber(clientId, ym);
-  const issueDate = document.getElementById('invoiceIssueDate').value;
-  const dueDate = document.getElementById('invoiceDueDate').value;
-  const discount = Number(document.getElementById('invoiceDiscountInput').value) || 0;
-  const customNote = document.getElementById('invoiceCustomNote').value.trim();
+    options.invNumber || saved.invoiceNumber || getDefaultInvoiceNumber(clientId, ym);
+  const issueDate = options.issueDate || saved.issueDate || defaults.issueDate;
+  const dueDate = options.dueDate || saved.dueDate || defaults.dueDate;
+  const discount =
+    options.discount !== undefined
+      ? Number(options.discount) || 0
+      : Number(saved.discount) || 0;
+  const customNote =
+    options.customNote !== undefined ? options.customNote : saved.customNote || '';
 
   const client = getClientById(clientId);
-  const bp = db.businessProfile || DEFAULT_SEED_DB.businessProfile;
-  const paper = document.getElementById('printableInvoiceArea');
-
   if (!client) {
-    paper.innerHTML = `<div class="empty-state">Select a client to view their invoice.</div>`;
-    return;
+    return {
+      html: `<div class="empty-state">Select a client to view their invoice.</div>`,
+      invNumber,
+      client: null,
+      sessionCount: 0
+    };
   }
 
+  const bp = db.businessProfile || DEFAULT_SEED_DB.businessProfile;
   const clientMonthSessions = getSessionsForMonth(ym)
     .filter((s) => s.clientId === clientId)
     .sort((a, b) => (a.date > b.date ? 1 : -1));
@@ -1217,7 +1264,6 @@ function renderInvoicePreviewPaper() {
       </tr>
     `;
   } else if (displayMode === 'grouped') {
-    // Grouped by Session Type + Rate
     const groups = {};
     clientMonthSessions.forEach((s) => {
       const st = getSessionTypeById(s.sessionTypeId);
@@ -1256,7 +1302,6 @@ function renderInvoicePreviewPaper() {
       )
       .join('');
   } else {
-    // Itemized by Date
     tableRowsHtml = clientMonthSessions
       .map((s) => {
         const st = getSessionTypeById(s.sessionTypeId);
@@ -1278,7 +1323,7 @@ function renderInvoicePreviewPaper() {
       .join('');
   }
 
-  paper.innerHTML = `
+  const html = `
     <div class="inv-header">
       <div class="inv-brand-block">
         <div class="inv-logo-box">${escapeHtml(bp.initials || 'CM')}</div>
@@ -1387,6 +1432,352 @@ function renderInvoicePreviewPaper() {
       </div>
     </div>
   `;
+
+  return { html, invNumber, client, sessionCount: totalSessionsCount };
+}
+
+function renderInvoicePreviewPaper() {
+  const clientId = document.getElementById('invoiceClientSelect').value;
+  const ym = document.getElementById('invoiceMonthSelect').value || activeMonth;
+  const displayMode = document.getElementById('invoiceDisplayMode').value;
+  const invNumber =
+    document.getElementById('invoiceNumberInput').value || getDefaultInvoiceNumber(clientId, ym);
+  const issueDate = document.getElementById('invoiceIssueDate').value;
+  const dueDate = document.getElementById('invoiceDueDate').value;
+  const discount = Number(document.getElementById('invoiceDiscountInput').value) || 0;
+  const customNote = document.getElementById('invoiceCustomNote').value.trim();
+
+  const paper = document.getElementById('printableInvoiceArea');
+  const rendered = buildInvoiceHtmlForClient(clientId, ym, {
+    displayMode,
+    invNumber,
+    issueDate,
+    dueDate,
+    discount,
+    customNote
+  });
+  paper.innerHTML = rendered.html;
+  updateBatchExportSummary(ym);
+}
+
+function getClientsWithSessionsInMonth(ym) {
+  const monthSessions = getSessionsForMonth(ym);
+  const clientIdsWithSessions = new Set(monthSessions.map((s) => s.clientId));
+  return db.clients.filter((c) => clientIdsWithSessions.has(c.id));
+}
+
+function getMonthFolderParts(ym) {
+  const [yearStr, monthNum] = (ym || activeMonth).split('-');
+  const monthDate = new Date(Number(yearStr), Number(monthNum) - 1, 1);
+  const monthName = monthDate.toLocaleDateString('en-GB', { month: 'long' });
+  return {
+    yearStr,
+    monthFolderName: `${monthNum} - ${monthName}`
+  };
+}
+
+function updateBatchExportSummary(ym) {
+  const summaryEl = document.getElementById('batchExportSummary');
+  const zipBtn = document.getElementById('batchDownloadZipBtn');
+  const driveBtn = document.getElementById('batchUploadDriveBtn');
+  if (!summaryEl) return;
+
+  const eligibleClients = getClientsWithSessionsInMonth(ym);
+  const { yearStr, monthFolderName } = getMonthFolderParts(ym);
+
+  if (eligibleClients.length === 0) {
+    summaryEl.textContent = `No clients have sessions recorded in ${formatMonthDisplay(ym)}.`;
+    if (zipBtn) zipBtn.disabled = true;
+    if (driveBtn) driveBtn.disabled = true;
+  } else {
+    summaryEl.innerHTML = `<strong>${eligibleClients.length}</strong> client${eligibleClients.length === 1 ? '' : 's'} with sessions in ${escapeHtml(formatMonthDisplay(ym))} &rarr; folder <code>${escapeHtml(yearStr)}/${escapeHtml(monthFolderName)}/</code>`;
+    if (zipBtn) zipBtn.disabled = false;
+    if (driveBtn) driveBtn.disabled = false;
+  }
+}
+
+function setBatchProgress(message, visible = true) {
+  const box = document.getElementById('batchProgressBox');
+  if (!box) return;
+  box.style.display = visible ? 'block' : 'none';
+  box.textContent = message;
+}
+
+async function renderInvoiceHtmlToPdfBlob(html) {
+  if (typeof window.html2pdf === 'undefined') {
+    throw new Error('PDF library is still loading or unavailable. Please check your internet connection and try again.');
+  }
+
+  const container = document.createElement('div');
+  container.className = 'invoice-paper';
+  container.style.cssText =
+    'position: fixed; left: -12000px; top: 0; width: 794px; max-width: 794px; padding: 36px; background: #ffffff; border: none; box-shadow: none; z-index: -1;';
+  container.innerHTML = html;
+  document.body.appendChild(container);
+
+  try {
+    const opt = {
+      margin: [10, 10, 10, 10],
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    const blob = await window.html2pdf().set(opt).from(container).outputPdf('blob');
+    return blob;
+  } finally {
+    container.remove();
+  }
+}
+
+async function generateMonthInvoicePdfs(ym, onProgress = null) {
+  const eligibleClients = getClientsWithSessionsInMonth(ym);
+  if (eligibleClients.length === 0) {
+    throw new Error(`No sessions recorded for ${formatMonthDisplay(ym)}.`);
+  }
+
+  const displayMode = document.getElementById('invoiceDisplayMode')?.value || 'itemized';
+  const results = [];
+
+  for (let i = 0; i < eligibleClients.length; i++) {
+    const client = eligibleClients[i];
+    if (onProgress) {
+      onProgress(i + 1, eligibleClients.length, client.name);
+    }
+    const rendered = buildInvoiceHtmlForClient(client.id, ym, { displayMode });
+    const safeClientName = client.name.replace(/[\\/:*?"<>|]/g, '_');
+    const filename = `${rendered.invNumber} - ${safeClientName}.pdf`;
+    const blob = await renderInvoiceHtmlToPdfBlob(rendered.html);
+    results.push({ client, filename, invNumber: rendered.invNumber, blob });
+  }
+
+  return results;
+}
+
+async function batchDownloadMonthZip() {
+  const ym = document.getElementById('invoiceMonthSelect').value || activeMonth;
+  if (typeof window.JSZip === 'undefined') {
+    showToast('ZIP library is still loading or unavailable.', 'error');
+    return;
+  }
+
+  const zipBtn = document.getElementById('batchDownloadZipBtn');
+  const driveBtn = document.getElementById('batchUploadDriveBtn');
+  zipBtn.disabled = true;
+  driveBtn.disabled = true;
+
+  try {
+    const pdfs = await generateMonthInvoicePdfs(ym, (idx, total, name) => {
+      setBatchProgress(`Generating PDF ${idx} of ${total}: ${name}...`);
+    });
+
+    setBatchProgress('Packaging invoices into ZIP...');
+    const { yearStr, monthFolderName } = getMonthFolderParts(ym);
+    const zip = new window.JSZip();
+    const folder = zip.folder(yearStr).folder(monthFolderName);
+
+    pdfs.forEach((item) => {
+      folder.file(item.filename, item.blob);
+    });
+
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(zipBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `CM-Care-Coaching-Invoices-${ym}.zip`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    setBatchProgress(`Done! Downloaded ${pdfs.length} invoice PDF(s) in ${yearStr}/${monthFolderName}/.`);
+    showToast(`Downloaded ${pdfs.length} invoice PDF(s) as ZIP!`);
+  } catch (err) {
+    setBatchProgress(`Error: ${err.message}`);
+    showToast(err.message, 'error');
+  } finally {
+    updateBatchExportSummary(ym);
+  }
+}
+
+// Google Drive OAuth & Upload Helpers
+function updateGDriveStatusUI() {
+  const badge = document.getElementById('gdriveStatusBadge');
+  if (!badge) return;
+  if (!gdriveConfig.clientId) {
+    badge.className = 'badge badge-archived';
+    badge.textContent = 'Not Configured';
+  } else if (gdriveAccessToken && Date.now() < gdriveTokenExpiresAt) {
+    badge.className = 'badge badge-active';
+    badge.textContent = 'Connected';
+  } else {
+    badge.className = 'badge badge-active';
+    badge.textContent = 'Client ID Saved';
+  }
+}
+
+function requestGoogleDriveAccessToken() {
+  return new Promise((resolve, reject) => {
+    if (gdriveAccessToken && Date.now() < gdriveTokenExpiresAt - 30000) {
+      resolve(gdriveAccessToken);
+      return;
+    }
+
+    if (!gdriveConfig.clientId) {
+      reject(new Error('Please enter your Google OAuth Client ID in Business & GitHub Sync settings first.'));
+      return;
+    }
+
+    if (typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2) {
+      reject(new Error('Google Sign-In script is not loaded yet. Please refresh or check your internet connection.'));
+      return;
+    }
+
+    const tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: gdriveConfig.clientId,
+      scope: 'https://www.googleapis.com/auth/drive',
+      callback: (resp) => {
+        if (resp.error) {
+          reject(new Error(resp.error_description || resp.error));
+          return;
+        }
+        gdriveAccessToken = resp.access_token;
+        gdriveTokenExpiresAt = Date.now() + (Number(resp.expires_in) || 3600) * 1000;
+        updateGDriveStatusUI();
+        resolve(gdriveAccessToken);
+      }
+    });
+
+    tokenClient.requestAccessToken({ prompt: gdriveAccessToken ? '' : 'consent' });
+  });
+}
+
+async function findOrCreateDriveFolder(token, folderName, parentId = null) {
+  const escapedName = folderName.replace(/'/g, "\\'");
+  let q = `mimeType = 'application/vnd.google-apps.folder' and name = '${escapedName}' and trashed = false`;
+  if (parentId) {
+    q += ` and '${parentId}' in parents`;
+  } else {
+    q += ` and 'root' in parents`;
+  }
+
+  const searchUrl = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name)&supportsAllDrives=true&includeItemsFromAllDrives=true`;
+  const searchRes = await fetch(searchUrl, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  if (!searchRes.ok) {
+    const err = await searchRes.json().catch(() => ({}));
+    throw new Error(err.error?.message || `Drive folder search failed (${searchRes.status})`);
+  }
+  const searchData = await searchRes.json();
+  if (searchData.files && searchData.files.length > 0) {
+    return searchData.files[0].id;
+  }
+
+  const metadata = {
+    name: folderName,
+    mimeType: 'application/vnd.google-apps.folder'
+  };
+  if (parentId) {
+    metadata.parents = [parentId];
+  }
+
+  const createRes = await fetch(
+    'https://www.googleapis.com/drive/v3/files?supportsAllDrives=true&fields=id',
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(metadata)
+    }
+  );
+  if (!createRes.ok) {
+    const err = await createRes.json().catch(() => ({}));
+    throw new Error(err.error?.message || `Could not create Drive folder "${folderName}"`);
+  }
+  const created = await createRes.json();
+  return created.id;
+}
+
+async function uploadPdfToDriveFolder(token, folderId, filename, pdfBlob) {
+  const escapedName = filename.replace(/'/g, "\\'");
+  const q = `name = '${escapedName}' and '${folderId}' in parents and trashed = false`;
+  const checkRes = await fetch(
+    `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id)&supportsAllDrives=true&includeItemsFromAllDrives=true`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  const checkData = checkRes.ok ? await checkRes.json() : { files: [] };
+  const existingFileId = checkData.files?.[0]?.id || null;
+
+  const metadata = existingFileId
+    ? { name: filename, mimeType: 'application/pdf' }
+    : { name: filename, mimeType: 'application/pdf', parents: [folderId] };
+
+  const form = new FormData();
+  form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+  form.append('file', pdfBlob, filename);
+
+  const uploadUrl = existingFileId
+    ? `https://www.googleapis.com/upload/drive/v3/files/${existingFileId}?uploadType=multipart&supportsAllDrives=true`
+    : 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true';
+
+  const uploadRes = await fetch(uploadUrl, {
+    method: existingFileId ? 'PATCH' : 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: form
+  });
+
+  if (!uploadRes.ok) {
+    const err = await uploadRes.json().catch(() => ({}));
+    throw new Error(err.error?.message || `Failed to upload ${filename}`);
+  }
+  return uploadRes.json();
+}
+
+async function batchUploadMonthToGoogleDrive() {
+  const ym = document.getElementById('invoiceMonthSelect').value || activeMonth;
+  if (!gdriveConfig.clientId) {
+    switchView('settings');
+    showToast('Please enter your Google OAuth Client ID in Settings first.', 'error');
+    return;
+  }
+
+  const zipBtn = document.getElementById('batchDownloadZipBtn');
+  const driveBtn = document.getElementById('batchUploadDriveBtn');
+  zipBtn.disabled = true;
+  driveBtn.disabled = true;
+
+  try {
+    setBatchProgress('Signing in to Google Drive...');
+    const token = await requestGoogleDriveAccessToken();
+
+    setBatchProgress('Preparing Year / Month folders in Google Drive...');
+    let rootFolderId = extractGoogleDriveFolderId(gdriveConfig.rootFolderInput);
+    if (!rootFolderId) {
+      rootFolderId = await findOrCreateDriveFolder(token, 'CM Care and Coaching Invoices', null);
+    }
+
+    const { yearStr, monthFolderName } = getMonthFolderParts(ym);
+    const yearFolderId = await findOrCreateDriveFolder(token, yearStr, rootFolderId);
+    const monthFolderId = await findOrCreateDriveFolder(token, monthFolderName, yearFolderId);
+
+    const pdfs = await generateMonthInvoicePdfs(ym, (idx, total, name) => {
+      setBatchProgress(`Generating PDF ${idx} of ${total}: ${name}...`);
+    });
+
+    for (let i = 0; i < pdfs.length; i++) {
+      const item = pdfs[i];
+      setBatchProgress(`Uploading ${i + 1} of ${pdfs.length} to Drive (${yearStr}/${monthFolderName}): ${item.filename}...`);
+      await uploadPdfToDriveFolder(token, monthFolderId, item.filename, item.blob);
+    }
+
+    setBatchProgress(`Uploaded ${pdfs.length} invoice PDF(s) to Google Drive: ${yearStr} / ${monthFolderName}`);
+    showToast(`Uploaded ${pdfs.length} invoice PDF(s) to Google Drive!`);
+  } catch (err) {
+    setBatchProgress(`Error: ${err.message}`);
+    showToast(`Google Drive upload failed: ${err.message}`, 'error');
+  } finally {
+    updateBatchExportSummary(ym);
+  }
 }
 
 function openInvoiceForClient(clientId, ym) {
@@ -1411,6 +1802,10 @@ function populateSettingsForms() {
   document.getElementById('ghPath').value = ghConfig.path || 'data/db.json';
   document.getElementById('ghToken').value = ghConfig.token || '';
   document.getElementById('ghAutoSync').checked = Boolean(ghConfig.autoSync);
+
+  document.getElementById('gdriveClientId').value = gdriveConfig.clientId || '';
+  document.getElementById('gdriveRootFolderInput').value = gdriveConfig.rootFolderInput || '';
+  updateGDriveStatusUI();
 
   const bp = db.businessProfile || DEFAULT_SEED_DB.businessProfile;
   document.getElementById('bizName').value = bp.name || '';
@@ -2120,6 +2515,41 @@ function bindEvents() {
   document.getElementById('printInvoiceBtn').addEventListener('click', () => {
     saveCurrentInvoiceMeta(true);
     window.print();
+  });
+  document.getElementById('batchDownloadZipBtn').addEventListener('click', batchDownloadMonthZip);
+  document.getElementById('batchUploadDriveBtn').addEventListener('click', batchUploadMonthToGoogleDrive);
+
+  // Google Drive Settings
+  document.getElementById('gdriveConfigForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    gdriveConfig.clientId = document.getElementById('gdriveClientId').value.trim();
+    gdriveConfig.rootFolderInput = document.getElementById('gdriveRootFolderInput').value.trim();
+    saveGDriveConfig();
+    updateGDriveStatusUI();
+    showToast('Google Drive settings saved!');
+  });
+
+  document.getElementById('gdriveConnectBtn').addEventListener('click', async () => {
+    document.getElementById('gdriveConfigForm').dispatchEvent(new Event('submit'));
+    try {
+      const token = await requestGoogleDriveAccessToken();
+      const targetId = extractGoogleDriveFolderId(gdriveConfig.rootFolderInput);
+      if (targetId) {
+        const res = await fetch(
+          `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(targetId)}?fields=id,name&supportsAllDrives=true`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (!res.ok) {
+          throw new Error(`Could not access folder ID "${targetId}". Check that you have access to that Google Drive folder.`);
+        }
+        const folder = await res.json();
+        showToast(`Connected to Google Drive folder: "${folder.name}"!`);
+      } else {
+        showToast('Connected to Google Drive! Invoices will be saved in "CM Care and Coaching Invoices".');
+      }
+    } catch (err) {
+      showToast(`Google Drive connection failed: ${err.message}`, 'error');
+    }
   });
 
   // GitHub Settings & Sync Buttons
