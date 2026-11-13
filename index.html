@@ -430,17 +430,42 @@
             <div class="card-header">
               <div>
                 <h2 class="card-title">Local Backup &amp; Data Management</h2>
-                <p class="card-subtitle">Download a JSON backup copy of your entire database or import an existing backup file.</p>
+                <p class="card-subtitle">Automatic rolling backup of the last 5 database updates to protect against accidental deletions, plus manual JSON export/import.</p>
               </div>
+              <button class="btn btn-secondary btn-sm" id="createManualBackupBtn">Save Manual Snapshot Now</button>
             </div>
             <div class="card-body">
-              <div class="filter-bar">
+              <div class="filter-bar" style="margin-bottom: 1.25rem;">
                 <button class="btn btn-secondary" id="downloadBackupBtn">Download JSON Backup</button>
                 <label class="btn btn-secondary" style="cursor: pointer;">
                   Import JSON Backup
                   <input type="file" id="importBackupInput" accept=".json" style="display: none;" />
                 </label>
                 <button class="btn btn-danger" id="clearAllSessionsBtn">Clear Sample Data &amp; Start Fresh</button>
+              </div>
+
+              <div class="backup-history-section">
+                <div class="backup-history-header">
+                  <div>
+                    <h3 style="font-size: 0.94rem; font-weight: 700; color: var(--text-main);">Automatic Backup History (Last 5 Updates)</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">Each snapshot captures your database immediately before an update or deletion.</p>
+                  </div>
+                  <span class="badge badge-active" id="backupCountBadge">0 / 5 Saved</span>
+                </div>
+                <div class="table-responsive" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-top: 0.75rem;">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th style="width: 60px;">#</th>
+                        <th>Saved At</th>
+                        <th>Captured Before</th>
+                        <th>Contents</th>
+                        <th style="text-align: right;">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="backupHistoryTableBody"></tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>

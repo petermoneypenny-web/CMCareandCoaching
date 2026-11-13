@@ -794,6 +794,20 @@ textarea.form-control {
   flex-wrap: wrap;
 }
 
+/* Backup History Section */
+.backup-history-section {
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.25rem;
+}
+
+.backup-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 /* Invoice Document Styling */
 .invoice-workspace {
   display: grid;

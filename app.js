@@ -4,7 +4,9 @@
  */
 
 const STORAGE_KEY_DB = 'cm_coaching_db_v2';
+const STORAGE_KEY_BACKUPS = 'cm_coaching_db_backups_v1';
 const STORAGE_KEY_GH = 'cm_coaching_gh_config_v1';
+const MAX_BACKUPS = 5;
 
 const INITIAL_CLIENT_NAMES = [
   'Margot',
@@ -296,7 +298,7 @@ async function loadDatabase() {
           },
           invoiceOverrides: remoteData.invoiceOverrides || {}
         };
-        persistLocalDb();
+        persistLocalDb(null, { skipBackup: true });
         return;
       }
     }
@@ -305,10 +307,76 @@ async function loadDatabase() {
   }
 
   // 3. Fallback to default seed data
-  persistLocalDb();
+  persistLocalDb(null, { skipBackup: true });
 }
 
-function persistLocalDb() {
+function getBackupsList() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_BACKUPS);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    console.warn('Failed to read backup history:', err);
+    return [];
+  }
+}
+
+function saveBackupsList(list) {
+  const trimmed = list.slice(0, MAX_BACKUPS);
+  try {
+    localStorage.setItem(STORAGE_KEY_BACKUPS, JSON.stringify(trimmed));
+  } catch (err) {
+    console.error('Error saving backup history:', err);
+  }
+}
+
+function captureBackupSnapshot(snapshotObj, reason = 'Database update') {
+  if (!snapshotObj || !Array.isArray(snapshotObj.clients) || !Array.isArray(snapshotObj.sessions)) {
+    return;
+  }
+
+  const backups = getBackupsList();
+  const entry = {
+    id: uid('bak'),
+    timestamp: new Date().toISOString(),
+    reason: reason || 'Database update',
+    summary: {
+      clients: snapshotObj.clients.length,
+      sessions: snapshotObj.sessions.length,
+      sessionTypes: Array.isArray(snapshotObj.sessionTypes) ? snapshotObj.sessionTypes.length : 0
+    },
+    data: snapshotObj
+  };
+
+  backups.unshift(entry);
+  saveBackupsList(backups);
+}
+
+function capturePreUpdateBackup(reason = 'Database update') {
+  try {
+    const prevRaw = localStorage.getItem(STORAGE_KEY_DB);
+    if (!prevRaw) return;
+    const prevParsed = JSON.parse(prevRaw);
+    if (!prevParsed || !Array.isArray(prevParsed.clients) || !Array.isArray(prevParsed.sessions)) {
+      return;
+    }
+
+    // Avoid duplicate snapshot if content (ignoring lastUpdated) is unchanged
+    const prevComparable = JSON.stringify({ ...prevParsed, lastUpdated: '' });
+    const nextComparable = JSON.stringify({ ...db, lastUpdated: '' });
+    if (prevComparable === nextComparable) return;
+
+    captureBackupSnapshot(prevParsed, reason);
+  } catch (err) {
+    console.warn('Could not capture pre-update backup:', err);
+  }
+}
+
+function persistLocalDb(reason = 'Database update', options = {}) {
+  if (!options.skipBackup) {
+    capturePreUpdateBackup(reason);
+  }
   db.lastUpdated = new Date().toISOString();
   try {
     localStorage.setItem(STORAGE_KEY_DB, JSON.stringify(db));
@@ -319,7 +387,7 @@ function persistLocalDb() {
 
 let autoSyncTimeout = null;
 function saveAndRefresh(triggerMsg) {
-  persistLocalDb();
+  persistLocalDb(triggerMsg || 'Database update');
   refreshAllViews();
   if (triggerMsg) {
     showToast(triggerMsg, 'success');
@@ -399,7 +467,7 @@ async function pullFromGitHub(silent = false) {
         },
         invoiceOverrides: remoteDb.invoiceOverrides || {}
       };
-      persistLocalDb();
+      persistLocalDb('Pulled latest from GitHub');
       refreshAllViews();
       updateSyncStatusUI('connected', `Pulled latest @ ${new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`);
       if (!silent) showToast('Database pulled from GitHub repository!');
@@ -1076,7 +1144,7 @@ function saveCurrentInvoiceMeta(silent = false) {
     displayMode: document.getElementById('invoiceDisplayMode').value
   };
 
-  persistLocalDb();
+  persistLocalDb('Saved invoice details');
   renderInvoicePreviewPaper();
   if (!silent) {
     showToast('Invoice details saved!');
@@ -1336,6 +1404,130 @@ function populateSettingsForms() {
   document.getElementById('bizSortCode').value = bp.sortCode || '';
   document.getElementById('bizAccountNumber').value = bp.accountNumber || '';
   document.getElementById('bizPaymentTerms').value = bp.paymentTerms || '';
+
+  renderBackupHistory();
+}
+
+function formatBackupTimestamp(isoStr) {
+  if (!isoStr) return '—';
+  const dt = new Date(isoStr);
+  if (Number.isNaN(dt.getTime())) return isoStr;
+  return dt.toLocaleString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+}
+
+function renderBackupHistory() {
+  const tbody = document.getElementById('backupHistoryTableBody');
+  const badge = document.getElementById('backupCountBadge');
+  if (!tbody) return;
+
+  const backups = getBackupsList();
+  if (badge) {
+    badge.textContent = `${backups.length} / ${MAX_BACKUPS} Saved`;
+  }
+
+  if (backups.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" class="empty-state" style="padding: 1.5rem 1rem;">
+          No automatic backups yet. A snapshot is automatically saved here before each database update or deletion (up to the last ${MAX_BACKUPS}).
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = backups
+    .map((bak, index) => {
+      const s = bak.summary || {};
+      const clientsCount = s.clients ?? (Array.isArray(bak.data?.clients) ? bak.data.clients.length : 0);
+      const sessionsCount = s.sessions ?? (Array.isArray(bak.data?.sessions) ? bak.data.sessions.length : 0);
+      const typesCount = s.sessionTypes ?? (Array.isArray(bak.data?.sessionTypes) ? bak.data.sessionTypes.length : 0);
+
+      return `
+        <tr>
+          <td><strong>#${index + 1}</strong></td>
+          <td style="white-space: nowrap;">${escapeHtml(formatBackupTimestamp(bak.timestamp))}</td>
+          <td>${escapeHtml(bak.reason || 'Database update')}</td>
+          <td style="font-size: 0.82rem; color: var(--text-secondary);">
+            ${clientsCount} client${clientsCount === 1 ? '' : 's'} &bull;
+            ${sessionsCount} session${sessionsCount === 1 ? '' : 's'} &bull;
+            ${typesCount} type${typesCount === 1 ? '' : 's'}
+          </td>
+          <td style="text-align: right; white-space: nowrap;">
+            <button class="btn btn-xs btn-primary" onclick="restoreBackup('${bak.id}')">Restore</button>
+            <button class="btn btn-xs btn-secondary" onclick="downloadBackupSnapshot('${bak.id}')">Download</button>
+          </td>
+        </tr>
+      `;
+    })
+    .join('');
+}
+
+function createManualBackup() {
+  captureBackupSnapshot(structuredClone(db), 'Manual snapshot');
+  renderBackupHistory();
+  showToast('Manual database snapshot saved!');
+}
+
+function restoreBackup(backupId) {
+  const backups = getBackupsList();
+  const bak = backups.find((b) => b.id === backupId);
+  if (!bak || !bak.data) {
+    showToast('Backup snapshot not found.', 'error');
+    return;
+  }
+
+  const s = bak.summary || {};
+  const clientsCount = s.clients ?? bak.data.clients?.length ?? 0;
+  const sessionsCount = s.sessions ?? bak.data.sessions?.length ?? 0;
+
+  if (
+    !confirm(
+      `Restore database from ${formatBackupTimestamp(bak.timestamp)}?\n\n` +
+        `Snapshot contains: ${clientsCount} client(s) and ${sessionsCount} session(s).\n` +
+        `Your current database will also be saved into backup history before restoring.`
+    )
+  ) {
+    return;
+  }
+
+  db = {
+    ...structuredClone(DEFAULT_SEED_DB),
+    ...structuredClone(bak.data),
+    businessProfile: {
+      ...DEFAULT_SEED_DB.businessProfile,
+      ...(bak.data.businessProfile || {})
+    },
+    invoiceOverrides: bak.data.invoiceOverrides || {}
+  };
+
+  saveAndRefresh(`Restored backup from ${formatBackupTimestamp(bak.timestamp)}`);
+}
+
+function downloadBackupSnapshot(backupId) {
+  const backups = getBackupsList();
+  const bak = backups.find((b) => b.id === backupId);
+  if (!bak || !bak.data) {
+    showToast('Backup snapshot not found.', 'error');
+    return;
+  }
+
+  const blob = new Blob([JSON.stringify(bak.data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const stamp = (bak.timestamp || '').slice(0, 19).replace(/[:T]/g, '-');
+  a.href = url;
+  a.download = `cm-care-coaching-backup-${stamp}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Backup snapshot downloaded!');
 }
 
 // CRUD Operations: Clients
@@ -1985,6 +2177,8 @@ function bindEvents() {
     reader.readAsText(file);
   });
 
+  document.getElementById('createManualBackupBtn').addEventListener('click', createManualBackup);
+
   document.getElementById('clearAllSessionsBtn').addEventListener('click', () => {
     if (
       !confirm(
@@ -2011,5 +2205,7 @@ window.deleteSession = deleteSession;
 window.openInvoiceForClient = openInvoiceForClient;
 window.jumpToMonthTracker = jumpToMonthTracker;
 window.jumpToMonthInvoices = jumpToMonthInvoices;
+window.restoreBackup = restoreBackup;
+window.downloadBackupSnapshot = downloadBackupSnapshot;
 
 document.addEventListener('DOMContentLoaded', initApp);
