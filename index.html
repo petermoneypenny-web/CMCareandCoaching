@@ -447,10 +447,13 @@
               <div class="backup-history-section">
                 <div class="backup-history-header">
                   <div>
-                    <h3 style="font-size: 0.94rem; font-weight: 700; color: var(--text-main);">Automatic Backup History (Last 5 Updates)</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted);">Each snapshot captures your database immediately before an update or deletion.</p>
+                    <h3 style="font-size: 0.94rem; font-weight: 700; color: var(--text-main);">Automatic Backup History (Last 5 Backups)</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">Automatically triggers a snapshot after every 10 database changes (or anytime you click Save Manual Snapshot Now).</p>
                   </div>
-                  <span class="badge badge-active" id="backupCountBadge">0 / 5 Saved</span>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                    <span class="badge badge-archived" id="backupChangeCounterBadge">0 / 10 Changes</span>
+                    <span class="badge badge-active" id="backupCountBadge">0 / 5 Saved</span>
+                  </div>
                 </div>
                 <div class="table-responsive" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-top: 0.75rem;">
                   <table class="data-table">

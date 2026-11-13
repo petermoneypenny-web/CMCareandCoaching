@@ -5,8 +5,10 @@
 
 const STORAGE_KEY_DB = 'cm_coaching_db_v2';
 const STORAGE_KEY_BACKUPS = 'cm_coaching_db_backups_v1';
+const STORAGE_KEY_BACKUP_COUNTER = 'cm_coaching_db_change_count_v1';
 const STORAGE_KEY_GH = 'cm_coaching_gh_config_v1';
 const MAX_BACKUPS = 5;
+const BACKUP_EVERY_N_CHANGES = 10;
 
 const INITIAL_CLIENT_NAMES = [
   'Margot',
@@ -353,31 +355,49 @@ function captureBackupSnapshot(snapshotObj, reason = 'Database update') {
   saveBackupsList(backups);
 }
 
-function capturePreUpdateBackup(reason = 'Database update') {
+function getBackupChangeCount() {
+  const val = Number(localStorage.getItem(STORAGE_KEY_BACKUP_COUNTER));
+  return Number.isFinite(val) && val >= 0 ? val : 0;
+}
+
+function setBackupChangeCount(count) {
+  try {
+    localStorage.setItem(STORAGE_KEY_BACKUP_COUNTER, String(Math.max(0, count)));
+  } catch (err) {
+    console.warn('Could not save backup change counter:', err);
+  }
+}
+
+function maybeTriggerAutoBackup(reason = 'Database update') {
   try {
     const prevRaw = localStorage.getItem(STORAGE_KEY_DB);
-    if (!prevRaw) return;
-    const prevParsed = JSON.parse(prevRaw);
-    if (!prevParsed || !Array.isArray(prevParsed.clients) || !Array.isArray(prevParsed.sessions)) {
-      return;
+    if (prevRaw) {
+      const prevParsed = JSON.parse(prevRaw);
+      const prevComparable = JSON.stringify({ ...prevParsed, lastUpdated: '' });
+      const nextComparable = JSON.stringify({ ...db, lastUpdated: '' });
+      if (prevComparable === nextComparable) return;
     }
 
-    // Avoid duplicate snapshot if content (ignoring lastUpdated) is unchanged
-    const prevComparable = JSON.stringify({ ...prevParsed, lastUpdated: '' });
-    const nextComparable = JSON.stringify({ ...db, lastUpdated: '' });
-    if (prevComparable === nextComparable) return;
-
-    captureBackupSnapshot(prevParsed, reason);
+    const nextCount = getBackupChangeCount() + 1;
+    if (nextCount >= BACKUP_EVERY_N_CHANGES) {
+      captureBackupSnapshot(
+        structuredClone(db),
+        `Auto-backup after ${BACKUP_EVERY_N_CHANGES} changes (${reason})`
+      );
+      setBackupChangeCount(0);
+    } else {
+      setBackupChangeCount(nextCount);
+    }
   } catch (err) {
-    console.warn('Could not capture pre-update backup:', err);
+    console.warn('Could not process auto-backup trigger:', err);
   }
 }
 
 function persistLocalDb(reason = 'Database update', options = {}) {
-  if (!options.skipBackup) {
-    capturePreUpdateBackup(reason);
-  }
   db.lastUpdated = new Date().toISOString();
+  if (!options.skipBackup) {
+    maybeTriggerAutoBackup(reason);
+  }
   try {
     localStorage.setItem(STORAGE_KEY_DB, JSON.stringify(db));
   } catch (err) {
@@ -1425,18 +1445,22 @@ function formatBackupTimestamp(isoStr) {
 function renderBackupHistory() {
   const tbody = document.getElementById('backupHistoryTableBody');
   const badge = document.getElementById('backupCountBadge');
+  const changeCounterBadge = document.getElementById('backupChangeCounterBadge');
   if (!tbody) return;
 
   const backups = getBackupsList();
   if (badge) {
     badge.textContent = `${backups.length} / ${MAX_BACKUPS} Saved`;
   }
+  if (changeCounterBadge) {
+    changeCounterBadge.textContent = `${getBackupChangeCount()} / ${BACKUP_EVERY_N_CHANGES} Changes`;
+  }
 
   if (backups.length === 0) {
     tbody.innerHTML = `
       <tr>
         <td colspan="5" class="empty-state" style="padding: 1.5rem 1rem;">
-          No automatic backups yet. A snapshot is automatically saved here before each database update or deletion (up to the last ${MAX_BACKUPS}).
+          No automatic backups yet. A snapshot is automatically saved after every ${BACKUP_EVERY_N_CHANGES} database changes (up to the last ${MAX_BACKUPS}).
         </td>
       </tr>
     `;
@@ -1472,6 +1496,7 @@ function renderBackupHistory() {
 
 function createManualBackup() {
   captureBackupSnapshot(structuredClone(db), 'Manual snapshot');
+  setBackupChangeCount(0);
   renderBackupHistory();
   showToast('Manual database snapshot saved!');
 }
