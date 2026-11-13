@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "lastUpdated": "2026-11-13T11:43:39.841Z",
+  "lastUpdated": "2026-11-13T11:43:52.677Z",
   "businessProfile": {
     "name": "CM Care and Coaching",
     "tagline": "Personal Training & Rehab Coaching",
@@ -36,7 +36,7 @@
       "name": "2-to-1 Partner Session (60 min)",
       "duration": 60,
       "price": 22.5,
-      "color": "#7c3aed",
+      "color": "#2563eb",
       "description": "Shared 60-minute coaching session for two clients"
     },
     {
