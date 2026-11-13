@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "lastUpdated": "2026-11-13T08:28:00.000Z",
+  "businessProfile": {
+    "name": "CM Care and Coaching",
+    "tagline": "Personal Training & Holistic Fitness Coaching",
+    "initials": "CM",
+    "email": "info@cmcareandcoaching.co.uk",
+    "phone": "07700 900123",
+    "address": "United Kingdom",
+    "bankAccountName": "CM Care and Coaching",
+    "bankName": "Monzo / High Street Bank",
+    "sortCode": "00-00-00",
+    "accountNumber": "12345678",
+    "paymentTerms": "Payment due within 14 days of invoice date. Please use the invoice number as your payment reference. Thank you for training with CM Care and Coaching!"
+  },
+  "sessionTypes": [
+    {
+      "id": "st_1",
+      "name": "1-to-1 Personal Training (60 min)",
+      "duration": 60,
+      "price": 45.0,
+      "color": "#2563eb",
+      "description": "Full 60-minute tailored personal training session"
+    },
+    {
+      "id": "st_2",
+      "name": "Express PT Session (30 min)",
+      "duration": 30,
+      "price": 28.0,
+      "color": "#0d9488",
+      "description": "High-efficiency 30-minute focused workout"
+    },
+    {
+      "id": "st_3",
+      "name": "2-to-1 Partner Session (60 min)",
+      "duration": 60,
+      "price": 60.0,
+      "color": "#7c3aed",
+      "description": "Shared 60-minute coaching session for two clients"
+    },
+    {
+      "id": "st_4",
+      "name": "Initial Assessment & Goal Review",
+      "duration": 60,
+      "price": 40.0,
+      "color": "#ea580c",
+      "description": "Movement screening, posture check, and programme design"
+    }
+  ],
+  "clients": [
+    {
+      "id": "cl_1",
+      "name": "Sarah Jenkins",
+      "email": "sarah.jenkins@example.co.uk",
+      "phone": "07700 900456",
+      "address": "14 Oakwood Avenue, Bristol, BS8 2AA",
+      "defaultSessionTypeId": "st_1",
+      "status": "active",
+      "notes": "Focusing on progressive strength training and core stability.",
+      "createdAt": "2026-09-01T10:00:00.000Z"
+    },
+    {
+      "id": "cl_2",
+      "name": "David Miller",
+      "email": "d.miller@example.co.uk",
+      "phone": "07700 900789",
+      "address": "82 Park Lane, Clifton, BS8 1JR",
+      "defaultSessionTypeId": "st_1",
+      "status": "active",
+      "notes": "Half-marathon prep and mobility work.",
+      "createdAt": "2026-09-15T10:00:00.000Z"
+    },
+    {
+      "id": "cl_3",
+      "name": "Emma Thompson",
+      "email": "emma.t@example.co.uk",
+      "phone": "07700 900321",
+      "address": "5 Harbourside View, BS1 5TY",
+      "defaultSessionTypeId": "st_2",
+      "status": "active",
+      "notes": "Twice-weekly lunchtime express sessions.",
+      "createdAt": "2026-10-01T10:00:00.000Z"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "ses_101",
+      "clientId": "cl_1",
+      "sessionTypeId": "st_1",
+      "date": "2026-10-06",
+      "month": "2026-10",
+      "quantity": 1,
+      "unitPrice": 45.0,
+      "notes": "Upper body strength & shoulder mobility"
+    },
+    {
+      "id": "ses_102",
+      "clientId": "cl_1",
+      "sessionTypeId": "st_1",
+      "date": "2026-10-13",
+      "month": "2026-10",
+      "quantity": 1,
+      "unitPrice": 45.0,
+      "notes": "Lower body compound lifts"
+    },
+    {
+      "id": "ses_103",
+      "clientId": "cl_1",
+      "sessionTypeId": "st_1",
+      "date": "2026-10-20",
+      "month": "2026-10",
+      "quantity": 1,
+      "unitPrice": 45.0,
+      "notes": "Deadlift progression & conditioning"
+    },
+    {
+      "id": "ses_104",
+      "clientId": "cl_2",
+      "sessionTypeId": "st_4",
+      "date": "2026-10-08",
+      "month": "2026-10",
+      "quantity": 1,
+      "unitPrice": 40.0,
+      "notes": "Initial gait & movement assessment"
+    },
+    {
+      "id": "ses_105",
+      "clientId": "cl_2",
+      "sessionTypeId": "st_1",
+      "date": "2026-10-15",
+      "month": "2026-10",
+      "quantity": 1,
+      "unitPrice": 45.0,
+      "notes": "Single-leg stability & tempo intervals"
+    },
+    {
+      "id": "ses_201",
+      "clientId": "cl_1",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-03",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 45.0,
+      "notes": "Squat PB test and core circuit"
+    },
+    {
+      "id": "ses_202",
+      "clientId": "cl_1",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-10",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 45.0,
+      "notes": "Pull-up progression & metabolic finisher"
+    },
+    {
+      "id": "ses_203",
+      "clientId": "cl_2",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-05",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 45.0,
+      "notes": "Posterior chain & hip mobility"
+    },
+    {
+      "id": "ses_204",
+      "clientId": "cl_3",
+      "sessionTypeId": "st_2",
+      "date": "2026-11-04",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 28.0,
+      "notes": "Kettlebell conditioning"
+    },
+    {
+      "id": "ses_205",
+      "clientId": "cl_3",
+      "sessionTypeId": "st_2",
+      "date": "2026-11-11",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 28.0,
+      "notes": "Core & upper body circuit"
+    }
+  ],
+  "invoiceOverrides": {}
+}

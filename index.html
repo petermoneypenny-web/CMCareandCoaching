@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CM Care and Coaching — Session Tracker &amp; Invoicing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="brand-logo" id="sidebarLogo">CM</div>
+        <div>
+          <div class="brand-title" id="sidebarBrandName">CM Care and Coaching</div>
+          <div class="brand-subtitle">PT Session &amp; Invoice Hub</div>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li>
+          <button class="nav-btn active" data-view="tracker">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Monthly Session Tracker
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" data-view="clients">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            Clients
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" data-view="session-types">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            Session Types &amp; Rates
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" data-view="history">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+            Monthly History Database
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" data-view="invoices">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            End-of-Month Invoices
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" data-view="settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            Business &amp; GitHub Sync
+          </button>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="sync-card">
+          <div class="sync-status-row">
+            <span class="sync-indicator">
+              <span class="status-dot" id="ghStatusDot"></span>
+              <span id="ghStatusLabel">Local Storage</span>
+            </span>
+          </div>
+          <div class="sync-meta" id="ghSyncMeta">Configure GitHub token in Settings to sync with repo.</div>
+          <div class="sync-actions">
+            <button class="btn btn-xs btn-primary" id="quickPushBtn" title="Push database to GitHub repository">Push to GitHub</button>
+            <button class="btn btn-xs btn-subtle" id="quickPullBtn" title="Pull latest database from GitHub repository">Pull</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-area">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-heading" id="pageHeading">Monthly Session Tracker</h1>
+        </div>
+        <div class="topbar-controls">
+          <div class="month-picker-group" title="Active Tracking &amp; Billing Month">
+            <button class="month-nav-btn" id="prevMonthBtn" aria-label="Previous Month">&larr;</button>
+            <input type="month" id="globalMonthPicker" class="month-input" />
+            <button class="month-nav-btn" id="nextMonthBtn" aria-label="Next Month">&rarr;</button>
+          </div>
+          <button class="btn btn-primary" id="topLogSessionBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Log Session
+          </button>
+        </div>
+      </header>
+
+      <main class="content-container">
+        <!-- 1. MONTHLY TRACKER VIEW -->
+        <section class="view-section active" id="view-tracker">
+          <div class="stats-grid" id="trackerStatsGrid"></div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Client Session Counter — <span class="active-month-label"></span></h2>
+                <p class="card-subtitle">Quickly add +1 session using a client's default session type, log a dated session, or generate their monthly invoice.</p>
+              </div>
+              <div class="filter-bar">
+                <button class="btn btn-secondary btn-sm" id="trackerAddClientBtn">+ New Client</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="tracker-grid" id="clientTrackerCards"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Detailed Session Log — <span class="active-month-label"></span></h2>
+                <p class="card-subtitle">Every individual session recorded for this month.</p>
+              </div>
+              <div class="filter-bar">
+                <select id="logClientFilter" class="form-control" style="min-width: 170px;">
+                  <option value="all">All Clients</option>
+                </select>
+                <select id="logTypeFilter" class="form-control" style="min-width: 180px;">
+                  <option value="all">All Session Types</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Client</th>
+                    <th>Session Type</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Total</th>
+                    <th>Notes</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="sessionLogTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. CLIENTS VIEW -->
+        <section class="view-section" id="view-clients">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Client Directory</h2>
+                <p class="card-subtitle">Add, edit, or remove personal training clients and set their default session package.</p>
+              </div>
+              <div class="filter-bar">
+                <input type="search" id="clientSearchInput" class="form-control" placeholder="Search name, email, phone..." />
+                <select id="clientStatusFilter" class="form-control">
+                  <option value="all">All Statuses</option>
+                  <option value="active">Active Only</option>
+                  <option value="archived">Archived</option>
+                </select>
+                <button class="btn btn-primary" id="openAddClientModalBtn">+ Add Client</button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Client Name</th>
+                    <th>Contact Details</th>
+                    <th>Default Session Type</th>
+                    <th>This Month</th>
+                    <th>All-Time Sessions</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="clientsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. SESSION TYPES VIEW -->
+        <section class="view-section" id="view-session-types">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Session Types &amp; Pricing</h2>
+                <p class="card-subtitle">Configure your personal training session types, durations, and standard GBP (£) rates.</p>
+              </div>
+              <button class="btn btn-primary" id="openAddSessionTypeModalBtn">+ Add Session Type</button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Session Type</th>
+                    <th>Duration</th>
+                    <th>Standard Price (£)</th>
+                    <th>Description</th>
+                    <th>Sessions Logged</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="sessionTypesTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. MONTHLY HISTORY DATABASE VIEW -->
+        <section class="view-section" id="view-history">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Monthly History Database</h2>
+                <p class="card-subtitle">Complete archive of every month's completed sessions, client totals, and revenue history.</p>
+              </div>
+              <div class="filter-bar">
+                <button class="btn btn-secondary btn-sm" id="exportDbBtnHistory">Export Database JSON</button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Month</th>
+                    <th>Clients Trained</th>
+                    <th>Total Sessions Done</th>
+                    <th>Total Revenue (£)</th>
+                    <th>Client Breakdown</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. END-OF-MONTH INVOICES VIEW -->
+        <section class="view-section" id="view-invoices">
+          <div class="invoice-workspace">
+            <!-- Left Side Controls (Hidden when printing) -->
+            <div class="card invoice-controls-panel no-print">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Invoice Builder</h2>
+                  <p class="card-subtitle">Select client &amp; month to generate their invoice.</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="invoiceClientSelect">Client</label>
+                  <select id="invoiceClientSelect" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                  <label for="invoiceMonthSelect">Billing Month</label>
+                  <input type="month" id="invoiceMonthSelect" class="form-control" />
+                </div>
+                <div class="form-group">
+                  <label for="invoiceDisplayMode">Line Item Format</label>
+                  <select id="invoiceDisplayMode" class="form-control">
+                    <option value="itemized">Itemized by Session Date &amp; Type</option>
+                    <option value="grouped">Grouped Summary by Session Type</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="invoiceNumberInput">Invoice Number</label>
+                  <input type="text" id="invoiceNumberInput" class="form-control" />
+                </div>
+                <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                  <div class="form-group">
+                    <label for="invoiceIssueDate">Issue Date</label>
+                    <input type="date" id="invoiceIssueDate" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                    <label for="invoiceDueDate">Due Date</label>
+                    <input type="date" id="invoiceDueDate" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="invoiceDiscountInput">Discount / Credit Adjustment (£)</label>
+                  <input type="number" step="0.01" id="invoiceDiscountInput" class="form-control" value="0" />
+                </div>
+                <div class="form-group">
+                  <label for="invoiceCustomNote">Custom Note for Client (Optional)</label>
+                  <textarea id="invoiceCustomNote" class="form-control" placeholder="e.g. Great work hitting new PBs this month!"></textarea>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1rem;">
+                  <button class="btn btn-primary" id="printInvoiceBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    Print / Save Invoice as PDF
+                  </button>
+                  <button class="btn btn-secondary" id="saveInvoiceMetaBtn">Save Invoice Details</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side Printable Invoice Sheet -->
+            <div class="invoice-paper" id="printableInvoiceArea">
+              <!-- Populated dynamically by app.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. SETTINGS & GITHUB SYNC VIEW -->
+        <section class="view-section" id="view-settings">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">GitHub Repository Database Sync</h2>
+                <p class="card-subtitle">Sync your client, session, and monthly history database directly to <code>data/db.json</code> in this GitHub repository.</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <form id="githubConfigForm">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="ghOwner">GitHub Owner / Username</label>
+                    <input type="text" id="ghOwner" class="form-control" placeholder="petermoneypenny-web" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="ghRepo">Repository Name</label>
+                    <input type="text" id="ghRepo" class="form-control" placeholder="CMCareandCoaching" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="ghBranch">Branch</label>
+                    <input type="text" id="ghBranch" class="form-control" placeholder="main" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="ghPath">Database File Path</label>
+                    <input type="text" id="ghPath" class="form-control" placeholder="data/db.json" required />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="ghToken">GitHub Personal Access Token (Fine-grained with Contents Read &amp; Write permission)</label>
+                  <input type="password" id="ghToken" class="form-control" placeholder="github_pat_... or ghp_..." />
+                  <small style="color: var(--text-muted); font-size: 0.78rem;">Your token is stored privately in your browser's LocalStorage and is never committed into the repository.</small>
+                </div>
+                <div class="form-group" style="flex-direction: row; align-items: center; gap: 0.6rem; margin-top: 0.5rem;">
+                  <input type="checkbox" id="ghAutoSync" style="width: 16px; height: 16px;" />
+                  <label for="ghAutoSync" style="margin: 0; cursor: pointer;">Automatically push changes to GitHub whenever clients or sessions are updated</label>
+                </div>
+                <div class="filter-bar" style="margin-top: 1rem;">
+                  <button type="submit" class="btn btn-primary">Save GitHub Settings</button>
+                  <button type="button" class="btn btn-success" id="settingsPushBtn">Push Database to GitHub Now</button>
+                  <button type="button" class="btn btn-secondary" id="settingsPullBtn">Pull Latest from GitHub</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Business Profile &amp; Invoice Branding</h2>
+                <p class="card-subtitle">These details appear on all end-of-month client invoices.</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <form id="businessProfileForm">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="bizName">Business Name</label>
+                    <input type="text" id="bizName" class="form-control" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="bizInitials">Logo Monogram / Initials</label>
+                    <input type="text" id="bizInitials" class="form-control" maxlength="4" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="bizTagline">Subtitle / Tagline</label>
+                    <input type="text" id="bizTagline" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                    <label for="bizEmail">Business Email</label>
+                    <input type="email" id="bizEmail" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                    <label for="bizPhone">Business Phone</label>
+                    <input type="text" id="bizPhone" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                    <label for="bizAddress">Business Address / Location</label>
+                    <input type="text" id="bizAddress" class="form-control" />
+                  </div>
+                </div>
+
+                <h3 style="font-size: 0.92rem; margin: 1rem 0 0.75rem; color: var(--text-main);">Bank &amp; Payment Details (Displayed on Invoices)</h3>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="bizBankName">Bank Name</label>
+                    <input type="text" id="bizBankName" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                    <label for="bizBankAccountName">Account Holder Name</label>
+                    <input type="text" id="bizBankAccountName" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                    <label for="bizSortCode">Sort Code</label>
+                    <input type="text" id="bizSortCode" class="form-control" placeholder="00-00-00" />
+                  </div>
+                  <div class="form-group">
+                    <label for="bizAccountNumber">Account Number</label>
+                    <input type="text" id="bizAccountNumber" class="form-control" placeholder="12345678" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="bizPaymentTerms">Invoice Payment Terms &amp; Footer Note</label>
+                  <textarea id="bizPaymentTerms" class="form-control"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Business Profile</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Local Backup &amp; Data Management</h2>
+                <p class="card-subtitle">Download a JSON backup copy of your entire database or import an existing backup file.</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="filter-bar">
+                <button class="btn btn-secondary" id="downloadBackupBtn">Download JSON Backup</button>
+                <label class="btn btn-secondary" style="cursor: pointer;">
+                  Import JSON Backup
+                  <input type="file" id="importBackupInput" accept=".json" style="display: none;" />
+                </label>
+                <button class="btn btn-danger" id="clearAllSessionsBtn">Clear Sample Data &amp; Start Fresh</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD / EDIT CLIENT -->
+  <div class="modal-backdrop" id="clientModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="clientModalTitle">Add Client</h3>
+        <button class="modal-close" data-close-modal="clientModal">&times;</button>
+      </div>
+      <form id="clientForm">
+        <div class="modal-body">
+          <input type="hidden" id="clientFormId" />
+          <div class="form-group">
+            <label for="clientFormName">Full Name *</label>
+            <input type="text" id="clientFormName" class="form-control" required placeholder="e.g. Sarah Jenkins" />
+          </div>
+          <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+            <div class="form-group">
+              <label for="clientFormEmail">Email Address</label>
+              <input type="email" id="clientFormEmail" class="form-control" placeholder="client@example.co.uk" />
+            </div>
+            <div class="form-group">
+              <label for="clientFormPhone">Phone Number</label>
+              <input type="text" id="clientFormPhone" class="form-control" placeholder="07700 900000" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="clientFormAddress">Billing Address</label>
+            <input type="text" id="clientFormAddress" class="form-control" placeholder="Street, City, Postcode" />
+          </div>
+          <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+            <div class="form-group">
+              <label for="clientFormDefaultType">Default Session Type</label>
+              <select id="clientFormDefaultType" class="form-control"></select>
+            </div>
+            <div class="form-group">
+              <label for="clientFormStatus">Status</label>
+              <select id="clientFormStatus" class="form-control">
+                <option value="active">Active</option>
+                <option value="archived">Archived</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="clientFormNotes">Coaching Goals &amp; Notes</label>
+            <textarea id="clientFormNotes" class="form-control" placeholder="Goals, injuries, or billing notes..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="clientModal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Client</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD / EDIT SESSION TYPE -->
+  <div class="modal-backdrop" id="sessionTypeModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="sessionTypeModalTitle">Add Session Type</h3>
+        <button class="modal-close" data-close-modal="sessionTypeModal">&times;</button>
+      </div>
+      <form id="sessionTypeForm">
+        <div class="modal-body">
+          <input type="hidden" id="sessionTypeFormId" />
+          <div class="form-group">
+            <label for="sessionTypeFormName">Session Type Name *</label>
+            <input type="text" id="sessionTypeFormName" class="form-control" required placeholder="e.g. 1-to-1 Personal Training (60 min)" />
+          </div>
+          <div class="form-grid" style="grid-template-columns: 1fr 1fr 90px;">
+            <div class="form-group">
+              <label for="sessionTypeFormPrice">Standard Rate (£) *</label>
+              <input type="number" step="0.01" min="0" id="sessionTypeFormPrice" class="form-control" required placeholder="45.00" />
+            </div>
+            <div class="form-group">
+              <label for="sessionTypeFormDuration">Duration (Mins)</label>
+              <input type="number" min="5" step="5" id="sessionTypeFormDuration" class="form-control" value="60" required />
+            </div>
+            <div class="form-group">
+              <label for="sessionTypeFormColor">Badge</label>
+              <input type="color" id="sessionTypeFormColor" class="form-control" value="#2563eb" style="height: 39px; padding: 3px;" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="sessionTypeFormDesc">Description</label>
+            <textarea id="sessionTypeFormDesc" class="form-control" placeholder="Brief description shown on invoices or tracker..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="sessionTypeModal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Session Type</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: LOG / EDIT SESSION -->
+  <div class="modal-backdrop" id="sessionModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="sessionModalTitle">Log Training Session</h3>
+        <button class="modal-close" data-close-modal="sessionModal">&times;</button>
+      </div>
+      <form id="sessionForm">
+        <div class="modal-body">
+          <input type="hidden" id="sessionFormId" />
+          <div class="form-group">
+            <label for="sessionFormClient">Client *</label>
+            <select id="sessionFormClient" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label for="sessionFormType">Session Type *</label>
+            <select id="sessionFormType" class="form-control" required></select>
+          </div>
+          <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="form-group">
+              <label for="sessionFormDate">Session Date *</label>
+              <input type="date" id="sessionFormDate" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="sessionFormQty">Number of Sessions *</label>
+              <input type="number" min="1" step="1" id="sessionFormQty" class="form-control" value="1" required />
+            </div>
+            <div class="form-group">
+              <label for="sessionFormPrice">Rate per Session (£) *</label>
+              <input type="number" step="0.01" min="0" id="sessionFormPrice" class="form-control" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="sessionFormNotes">Session Notes (Optional)</label>
+            <input type="text" id="sessionFormNotes" class="form-control" placeholder="e.g. Lower body strength focus, deadlift PB" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="sessionModal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Session</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
