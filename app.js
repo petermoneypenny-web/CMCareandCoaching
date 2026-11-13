@@ -1511,15 +1511,25 @@ async function renderInvoiceHtmlToPdfBlob(html) {
   const container = document.createElement('div');
   container.className = 'invoice-paper';
   container.style.cssText =
-    'position: fixed; left: -12000px; top: 0; width: 794px; max-width: 794px; padding: 36px; background: #ffffff; border: none; box-shadow: none; z-index: -1;';
+    'position: fixed; left: 0; top: 0; width: 794px; max-width: 794px; padding: 36px; background: #ffffff; border: none; box-shadow: none; z-index: 9999; pointer-events: none;';
   container.innerHTML = html;
   document.body.appendChild(container);
+
+  // Wait for browser layout before html2canvas captures the element
+  await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
   try {
     const opt = {
       margin: [10, 10, 10, 10],
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: 794
+      },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
     const blob = await window.html2pdf().set(opt).from(container).outputPdf('blob');
