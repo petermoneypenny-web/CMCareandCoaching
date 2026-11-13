@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "lastUpdated": "2026-11-13T10:33:43.812Z",
+  "lastUpdated": "2026-11-13T11:02:08.182Z",
   "businessProfile": {
     "name": "CM Care and Coaching",
     "tagline": "Personal Training & Rehab Coaching",
@@ -133,7 +133,7 @@
         "st_3"
       ],
       "status": "active",
-      "notes": "",
+      "notes": "Favourite Client\nPB - Chest Press 140kg",
       "createdAt": "2026-11-13T08:52:00.000Z"
     },
     {
@@ -522,8 +522,256 @@
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
+    },
+    {
+      "id": "cl_mweuwiyn_9gcb",
+      "name": "Sam/M-J",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "st_mwerg4c3_qgk1",
+      "allowedSessionTypeIds": [
+        "st_mwerg4c3_qgk1"
+      ],
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T10:51:17.375Z"
+    },
+    {
+      "id": "cl_mweuze9o_dn3z",
+      "name": "Marilyn",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1"
+      ],
+      "status": "active",
+      "notes": "",
+      "createdAt": "2026-11-13T10:53:31.260Z"
     }
   ],
-  "sessions": [],
-  "invoiceOverrides": {}
+  "sessions": [
+    {
+      "id": "ses_mweuunhm_pl60",
+      "clientId": "cl_2",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 43.5,
+      "notes": "Quick +1 session logged"
+    },
+    {
+      "id": "ses_mweuuvv4_mdfh",
+      "clientId": "cl_3",
+      "sessionTypeId": "st_mwer5vzz_llwu",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 32.5,
+      "notes": ""
+    },
+    {
+      "id": "ses_mweuv3js_g8ss",
+      "clientId": "cl_6",
+      "sessionTypeId": "st_mwer6zzs_6psj",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 20,
+      "notes": ""
+    },
+    {
+      "id": "ses_mweuvauz_noxj",
+      "clientId": "cl_7",
+      "sessionTypeId": "st_mwer2hfc_raex",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 2,
+      "unitPrice": 37.5,
+      "notes": ""
+    },
+    {
+      "id": "ses_mweuvedv_dfzv",
+      "clientId": "cl_7",
+      "sessionTypeId": "st_mwer6zzs_6psj",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 20,
+      "notes": ""
+    },
+    {
+      "id": "ses_mweuvlc6_zh0c",
+      "clientId": "cl_9",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 43.5,
+      "notes": ""
+    },
+    {
+      "id": "ses_mweuvsd2_9svn",
+      "clientId": "cl_10",
+      "sessionTypeId": "st_mwer2hfc_raex",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 37.5,
+      "notes": ""
+    },
+    {
+      "id": "ses_mweuwn4g_yqat",
+      "clientId": "cl_mweuwiyn_9gcb",
+      "sessionTypeId": "st_mwerg4c3_qgk1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 45,
+      "notes": "Quick +1 session logged"
+    },
+    {
+      "id": "ses_mweux0ha_8r4p",
+      "clientId": "cl_11",
+      "sessionTypeId": "st_mwer6zzs_6psj",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 2,
+      "unitPrice": 20,
+      "notes": ""
+    },
+    {
+      "id": "ses_mweux4sj_92vt",
+      "clientId": "cl_11",
+      "sessionTypeId": "st_mwer3vit_geyx",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 41,
+      "notes": ""
+    },
+    {
+      "id": "ses_mweuxaib_gkjn",
+      "clientId": "cl_12",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 43.5,
+      "notes": "Quick +1 session logged"
+    },
+    {
+      "id": "ses_mweuxfz7_h4u8",
+      "clientId": "cl_13",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 43.5,
+      "notes": "Quick +1 session logged"
+    },
+    {
+      "id": "ses_mweuxird_nb1q",
+      "clientId": "cl_14",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 43.5,
+      "notes": "Quick +1 session logged"
+    },
+    {
+      "id": "ses_mweuxpk0_epmq",
+      "clientId": "cl_16",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 43.5,
+      "notes": "Quick +1 session logged"
+    },
+    {
+      "id": "ses_mweuxubv_phq2",
+      "clientId": "cl_17",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 43.5,
+      "notes": "Quick +1 session logged"
+    },
+    {
+      "id": "ses_mweuy5mm_xg69",
+      "clientId": "cl_19",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 43.5,
+      "notes": ""
+    },
+    {
+      "id": "ses_mweuyayf_ofmo",
+      "clientId": "cl_21",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 43.5,
+      "notes": "Quick +1 session logged"
+    },
+    {
+      "id": "ses_mweuygny_unzj",
+      "clientId": "cl_24",
+      "sessionTypeId": "st_mwerg4c3_qgk1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 45,
+      "notes": "Quick +1 session logged"
+    },
+    {
+      "id": "ses_mweuykis_k0wc",
+      "clientId": "cl_26",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 43.5,
+      "notes": "Quick +1 session logged"
+    },
+    {
+      "id": "ses_mweuyu25_8uh0",
+      "clientId": "cl_27",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 43.5,
+      "notes": "Quick +1 session logged"
+    },
+    {
+      "id": "ses_mweuzinx_9igq",
+      "clientId": "cl_mweuze9o_dn3z",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-13",
+      "month": "2026-11",
+      "quantity": 1,
+      "unitPrice": 43.5,
+      "notes": "Quick +1 session logged"
+    }
+  ],
+  "invoiceOverrides": {
+    "cl_2_2026-11": {
+      "invoiceNumber": "INV-202611-002",
+      "issueDate": "2026-11-30",
+      "dueDate": "2026-12-14",
+      "discount": 0,
+      "customNote": "",
+      "displayMode": "itemized"
+    }
+  }
 }
