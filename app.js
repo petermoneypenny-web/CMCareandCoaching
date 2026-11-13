@@ -2536,11 +2536,18 @@ function bindEvents() {
       const targetId = extractGoogleDriveFolderId(gdriveConfig.rootFolderInput);
       if (targetId) {
         const res = await fetch(
-          `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(targetId)}?fields=id,name&supportsAllDrives=true`,
+          `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(targetId)}?fields=id,name,mimeType&supportsAllDrives=true`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!res.ok) {
-          throw new Error(`Could not access folder ID "${targetId}". Check that you have access to that Google Drive folder.`);
+          const errData = await res.json().catch(() => ({}));
+          const apiMsg = errData.error?.message || `HTTP ${res.status}`;
+          if (res.status === 401 || res.status === 403) {
+            gdriveAccessToken = null;
+            gdriveTokenExpiresAt = 0;
+            updateGDriveStatusUI();
+          }
+          throw new Error(`${apiMsg} (Folder ID: ${targetId})`);
         }
         const folder = await res.json();
         showToast(`Connected to Google Drive folder: "${folder.name}"!`);
