@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "lastUpdated": "2026-11-13T11:43:52.677Z",
+  "lastUpdated": "2026-11-13T11:44:04.348Z",
   "businessProfile": {
     "name": "CM Care and Coaching",
     "tagline": "Personal Training & Rehab Coaching",
@@ -84,7 +84,7 @@
       "name": "1-to-1 Online Personal Training (60 min)",
       "price": 32.5,
       "duration": 60,
-      "color": "#3fe94b",
+      "color": "#2563eb",
       "description": "Full 60-minute tailored online personal training session"
     },
     {
