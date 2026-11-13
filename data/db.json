@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "lastUpdated": "2026-11-13T09:22:56.839Z",
+  "lastUpdated": "2026-11-13T10:33:43.812Z",
   "businessProfile": {
     "name": "CM Care and Coaching",
-    "initials": "CM",
     "tagline": "Personal Training & Rehab Coaching",
+    "initials": "CM",
     "email": "cmcareandcoaching@gmail.com",
     "phone": "07544390168",
     "address": "United Kingdom",
-    "bankName": "Monzo / High Street Bank",
     "bankAccountName": "CM Care and Coaching",
+    "bankName": "Monzo / High Street Bank",
     "sortCode": "00-00-00",
     "accountNumber": "12345678",
     "paymentTerms": "Payment due within 14 days of invoice date. Please use the invoice number as your payment reference. Thank you for training with CM Care and Coaching!"
@@ -127,8 +127,11 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1",
+        "st_3"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -139,8 +142,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -151,8 +156,11 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_mwer5vzz_llwu",
+      "allowedSessionTypeIds": [
+        "st_1",
+        "st_mwer5vzz_llwu"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -163,8 +171,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -175,8 +185,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_mwer12mh_gpwd",
+      "allowedSessionTypeIds": [
+        "st_mwer12mh_gpwd"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -187,8 +199,11 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_mwer6zzs_6psj",
+      "allowedSessionTypeIds": [
+        "st_1",
+        "st_mwer6zzs_6psj"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -199,8 +214,11 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_mwer2hfc_raex",
+      "allowedSessionTypeIds": [
+        "st_mwer2hfc_raex",
+        "st_mwer6zzs_6psj"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -211,8 +229,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_mwer3apz_uhse",
+      "allowedSessionTypeIds": [
+        "st_mwer3apz_uhse"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -223,8 +243,11 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1",
+        "st_mwer6zzs_6psj"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -235,8 +258,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_mwer2hfc_raex",
+      "allowedSessionTypeIds": [
+        "st_mwer2hfc_raex"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -247,8 +272,11 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_mwer6zzs_6psj",
+      "allowedSessionTypeIds": [
+        "st_mwer3vit_geyx",
+        "st_mwer6zzs_6psj"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -259,8 +287,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -271,8 +301,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -283,8 +315,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -295,8 +329,11 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_mwer3apz_uhse",
+      "allowedSessionTypeIds": [
+        "st_mwer3apz_uhse",
+        "st_mwer6zzs_6psj"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -307,8 +344,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -319,8 +358,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -331,8 +372,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_mwer12mh_gpwd",
+      "allowedSessionTypeIds": [
+        "st_mwer12mh_gpwd"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -343,8 +386,11 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_mwerdbsq_eq0i",
+      "allowedSessionTypeIds": [
+        "st_1",
+        "st_mwerdbsq_eq0i"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -355,8 +401,11 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1",
+        "st_mwerdbsq_eq0i"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -367,8 +416,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -379,8 +430,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_mwerf48w_32zp",
+      "allowedSessionTypeIds": [
+        "st_mwerf48w_32zp"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -391,8 +444,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_mwer2hfc_raex",
+      "allowedSessionTypeIds": [
+        "st_mwer2hfc_raex"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -403,8 +458,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_mwerg4c3_qgk1",
+      "allowedSessionTypeIds": [
+        "st_mwerg4c3_qgk1"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -415,8 +472,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -427,8 +486,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -439,8 +500,11 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1",
+        "st_3"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -451,8 +515,10 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
-      "allowedSessionTypeIds": [],
+      "defaultSessionTypeId": "st_1",
+      "allowedSessionTypeIds": [
+        "st_1"
+      ],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
