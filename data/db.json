@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "lastUpdated": "2026-11-13T08:52:00.000Z",
+  "lastUpdated": "2026-11-13T09:22:56.839Z",
   "businessProfile": {
     "name": "CM Care and Coaching",
-    "tagline": "Personal Training & Holistic Fitness Coaching",
     "initials": "CM",
-    "email": "info@cmcareandcoaching.co.uk",
-    "phone": "07700 900123",
+    "tagline": "Personal Training & Rehab Coaching",
+    "email": "cmcareandcoaching@gmail.com",
+    "phone": "07544390168",
     "address": "United Kingdom",
-    "bankAccountName": "CM Care and Coaching",
     "bankName": "Monzo / High Street Bank",
+    "bankAccountName": "CM Care and Coaching",
     "sortCode": "00-00-00",
     "accountNumber": "12345678",
     "paymentTerms": "Payment due within 14 days of invoice date. Please use the invoice number as your payment reference. Thank you for training with CM Care and Coaching!"
@@ -19,7 +19,7 @@
       "id": "st_1",
       "name": "1-to-1 Personal Training (60 min)",
       "duration": 60,
-      "price": 45.0,
+      "price": 43.5,
       "color": "#2563eb",
       "description": "Full 60-minute tailored personal training session"
     },
@@ -27,7 +27,7 @@
       "id": "st_2",
       "name": "Express PT Session (30 min)",
       "duration": 30,
-      "price": 28.0,
+      "price": 28,
       "color": "#0d9488",
       "description": "High-efficiency 30-minute focused workout"
     },
@@ -35,7 +35,7 @@
       "id": "st_3",
       "name": "2-to-1 Partner Session (60 min)",
       "duration": 60,
-      "price": 60.0,
+      "price": 22.5,
       "color": "#7c3aed",
       "description": "Shared 60-minute coaching session for two clients"
     },
@@ -43,9 +43,81 @@
       "id": "st_4",
       "name": "Initial Assessment & Goal Review",
       "duration": 60,
-      "price": 40.0,
+      "price": 40,
       "color": "#ea580c",
       "description": "Movement screening, posture check, and programme design"
+    },
+    {
+      "id": "st_mwer12mh_gpwd",
+      "name": "1-to-1 Personal Training (60 min)",
+      "price": 42.5,
+      "duration": 60,
+      "color": "#2563eb",
+      "description": "Full 60-minute tailored personal training session"
+    },
+    {
+      "id": "st_mwer2hfc_raex",
+      "name": "1-to-1 Personal Training (60 min)",
+      "price": 37.5,
+      "duration": 60,
+      "color": "#2563eb",
+      "description": "Full 60-minute tailored personal training session"
+    },
+    {
+      "id": "st_mwer3apz_uhse",
+      "name": "1-to-1 Personal Training (60 min)",
+      "price": 20,
+      "duration": 60,
+      "color": "#2563eb",
+      "description": "Full 60-minute tailored personal training session"
+    },
+    {
+      "id": "st_mwer3vit_geyx",
+      "name": "1-to-1 Personal Training (60 min)",
+      "price": 41,
+      "duration": 60,
+      "color": "#2563eb",
+      "description": "Full 60-minute tailored personal training session"
+    },
+    {
+      "id": "st_mwer5vzz_llwu",
+      "name": "1-to-1 Online Personal Training (60 min)",
+      "price": 32.5,
+      "duration": 60,
+      "color": "#3fe94b",
+      "description": "Full 60-minute tailored online personal training session"
+    },
+    {
+      "id": "st_mwer6zzs_6psj",
+      "name": "1-to-1 Online Personal Training (60 min)",
+      "price": 20,
+      "duration": 60,
+      "color": "#2563eb",
+      "description": "Full 60-minute tailored online personal training session"
+    },
+    {
+      "id": "st_mwerdbsq_eq0i",
+      "name": "2-to-1 Personal Training (60 min)",
+      "price": 45,
+      "duration": 60,
+      "color": "#2563eb",
+      "description": "Shared 60-minute coaching session for two clients"
+    },
+    {
+      "id": "st_mwerf48w_32zp",
+      "name": "1-to-1 Personal Training (60 min)",
+      "price": 43,
+      "duration": 60,
+      "color": "#2563eb",
+      "description": "Full 60-minute tailored personal training session"
+    },
+    {
+      "id": "st_mwerg4c3_qgk1",
+      "name": "1-to-1 Personal Training (60 min)",
+      "price": 45,
+      "duration": 60,
+      "color": "#2563eb",
+      "description": "Full 60-minute tailored personal training session"
     }
   ],
   "clients": [
@@ -55,7 +127,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -66,7 +138,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -77,7 +149,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwer5vzz_llwu",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -88,7 +160,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -99,7 +171,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwer12mh_gpwd",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -110,7 +182,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwer6zzs_6psj",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -121,7 +193,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwer2hfc_raex",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -132,7 +204,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwer3apz_uhse",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -143,7 +215,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwer6zzs_6psj",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -154,7 +226,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwer2hfc_raex",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -165,7 +237,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwer6zzs_6psj",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -176,7 +248,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -187,7 +259,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -198,7 +270,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -209,7 +281,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwer6zzs_6psj",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -220,7 +292,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -231,7 +303,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -242,7 +314,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwer12mh_gpwd",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -253,7 +325,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwerdbsq_eq0i",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -264,7 +336,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -275,7 +347,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -286,7 +358,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwerf48w_32zp",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -297,7 +369,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwer2hfc_raex",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -308,7 +380,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_mwerg4c3_qgk1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -319,7 +391,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -330,7 +402,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -341,7 +413,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -352,7 +424,7 @@
       "email": "",
       "phone": "",
       "address": "",
-      "defaultSessionTypeId": "",
+      "defaultSessionTypeId": "st_1",
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
