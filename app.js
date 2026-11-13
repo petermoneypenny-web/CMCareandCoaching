@@ -1512,12 +1512,12 @@ async function renderInvoiceHtmlToPdfBlob(html) {
   // does not inherit position:fixed offsets that cause blank captures.
   const wrapper = document.createElement('div');
   wrapper.style.cssText =
-    'position: absolute; left: 0; top: 0; width: 794px; background: #ffffff; z-index: 9999; pointer-events: none;';
+    'position: absolute; left: 0; top: 0; width: 700px; background: #ffffff; z-index: 9999; pointer-events: none;';
 
   const container = document.createElement('div');
   container.className = 'invoice-paper';
   container.style.cssText =
-    'width: 794px; max-width: 794px; padding: 36px; background: #ffffff; color: #0f172a; border: none; box-shadow: none; margin: 0;';
+    'width: 700px; max-width: 700px; padding: 24px; box-sizing: border-box; background: #ffffff; color: #0f172a; border: none; box-shadow: none; margin: 0;';
   container.innerHTML = html;
 
   wrapper.appendChild(container);
@@ -1534,7 +1534,8 @@ async function renderInvoiceHtmlToPdfBlob(html) {
         useCORS: true,
         logging: false,
         scrollX: 0,
-        scrollY: 0
+        scrollY: 0,
+        windowWidth: 700
       },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
