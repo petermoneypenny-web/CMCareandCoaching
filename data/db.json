@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "lastUpdated": "2026-11-13T11:02:08.182Z",
+  "lastUpdated": "2026-11-13T11:45:51.428Z",
   "businessProfile": {
     "name": "CM Care and Coaching",
     "tagline": "Personal Training & Rehab Coaching",
@@ -36,7 +36,7 @@
       "name": "2-to-1 Partner Session (60 min)",
       "duration": 60,
       "price": 22.5,
-      "color": "#7c3aed",
+      "color": "#2563eb",
       "description": "Shared 60-minute coaching session for two clients"
     },
     {
@@ -84,7 +84,7 @@
       "name": "1-to-1 Online Personal Training (60 min)",
       "price": 32.5,
       "duration": 60,
-      "color": "#3fe94b",
+      "color": "#2563eb",
       "description": "Full 60-minute tailored online personal training session"
     },
     {
@@ -561,7 +561,7 @@
       "month": "2026-11",
       "quantity": 1,
       "unitPrice": 43.5,
-      "notes": "Quick +1 session logged"
+      "notes": ""
     },
     {
       "id": "ses_mweuuvv4_mdfh",
@@ -631,7 +631,7 @@
       "month": "2026-11",
       "quantity": 1,
       "unitPrice": 45,
-      "notes": "Quick +1 session logged"
+      "notes": ""
     },
     {
       "id": "ses_mweux0ha_8r4p",
@@ -661,7 +661,7 @@
       "month": "2026-11",
       "quantity": 1,
       "unitPrice": 43.5,
-      "notes": "Quick +1 session logged"
+      "notes": ""
     },
     {
       "id": "ses_mweuxfz7_h4u8",
@@ -671,7 +671,7 @@
       "month": "2026-11",
       "quantity": 1,
       "unitPrice": 43.5,
-      "notes": "Quick +1 session logged"
+      "notes": ""
     },
     {
       "id": "ses_mweuxird_nb1q",
@@ -681,7 +681,7 @@
       "month": "2026-11",
       "quantity": 1,
       "unitPrice": 43.5,
-      "notes": "Quick +1 session logged"
+      "notes": ""
     },
     {
       "id": "ses_mweuxpk0_epmq",
@@ -691,7 +691,7 @@
       "month": "2026-11",
       "quantity": 1,
       "unitPrice": 43.5,
-      "notes": "Quick +1 session logged"
+      "notes": ""
     },
     {
       "id": "ses_mweuxubv_phq2",
@@ -701,7 +701,7 @@
       "month": "2026-11",
       "quantity": 1,
       "unitPrice": 43.5,
-      "notes": "Quick +1 session logged"
+      "notes": ""
     },
     {
       "id": "ses_mweuy5mm_xg69",
@@ -721,7 +721,7 @@
       "month": "2026-11",
       "quantity": 1,
       "unitPrice": 43.5,
-      "notes": "Quick +1 session logged"
+      "notes": ""
     },
     {
       "id": "ses_mweuygny_unzj",
@@ -731,7 +731,7 @@
       "month": "2026-11",
       "quantity": 1,
       "unitPrice": 45,
-      "notes": "Quick +1 session logged"
+      "notes": ""
     },
     {
       "id": "ses_mweuykis_k0wc",
@@ -741,7 +741,7 @@
       "month": "2026-11",
       "quantity": 1,
       "unitPrice": 43.5,
-      "notes": "Quick +1 session logged"
+      "notes": ""
     },
     {
       "id": "ses_mweuyu25_8uh0",
@@ -751,7 +751,7 @@
       "month": "2026-11",
       "quantity": 1,
       "unitPrice": 43.5,
-      "notes": "Quick +1 session logged"
+      "notes": ""
     },
     {
       "id": "ses_mweuzinx_9igq",
@@ -761,7 +761,7 @@
       "month": "2026-11",
       "quantity": 1,
       "unitPrice": 43.5,
-      "notes": "Quick +1 session logged"
+      "notes": ""
     }
   ],
   "invoiceOverrides": {
