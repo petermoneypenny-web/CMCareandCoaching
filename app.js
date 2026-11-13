@@ -1504,20 +1504,18 @@ function setBatchProgress(message, visible = true) {
 }
 
 async function renderInvoiceHtmlToPdfBlob(html) {
-  if (typeof window.html2pdf === 'undefined') {
-    throw new Error('PDF library is still loading or unavailable. Please check your internet connection and try again.');
+  if (typeof window.html2canvas === 'undefined' || !window.jspdf?.jsPDF) {
+    throw new Error('PDF libraries are still loading or unavailable. Please check your internet connection and try again.');
   }
 
-  // Keep the invoice element itself static-positioned so html2pdf's internal cloner
-  // does not inherit position:fixed offsets that cause blank captures.
   const wrapper = document.createElement('div');
   wrapper.style.cssText =
-    'position: absolute; left: 0; top: 0; width: 700px; background: #ffffff; z-index: 9999; pointer-events: none;';
+    'position: fixed; left: 0; top: 0; width: 760px; background: #ffffff; z-index: 9999; pointer-events: none;';
 
   const container = document.createElement('div');
   container.className = 'invoice-paper';
   container.style.cssText =
-    'width: 700px; max-width: 700px; padding: 24px; box-sizing: border-box; background: #ffffff; color: #0f172a; border: none; box-shadow: none; margin: 0;';
+    'width: 760px; max-width: 760px; padding: 28px; box-sizing: border-box; background: #ffffff; color: #0f172a; border: none; box-shadow: none; margin: 0;';
   container.innerHTML = html;
 
   wrapper.appendChild(container);
@@ -1526,21 +1524,69 @@ async function renderInvoiceHtmlToPdfBlob(html) {
   await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
   try {
-    const opt = {
-      margin: [10, 10, 10, 10],
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        scrollX: 0,
-        scrollY: 0,
-        windowWidth: 700
-      },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-    const blob = await window.html2pdf().set(opt).from(container).outputPdf('blob');
-    return blob;
+    const canvas = await window.html2canvas(container, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      logging: false
+    });
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+    const pageWidthMm = 210;
+    const pageHeightMm = 297;
+    const marginMm = 10;
+    const contentWidthMm = pageWidthMm - marginMm * 2; // 190mm
+    const contentHeightMm = pageHeightMm - marginMm * 2; // 277mm
+
+    const totalImgHeightMm = (canvas.height * contentWidthMm) / canvas.width;
+
+    if (totalImgHeightMm <= contentHeightMm) {
+      const imgData = canvas.toDataURL('image/jpeg', 0.96);
+      pdf.addImage(imgData, 'JPEG', marginMm, marginMm, contentWidthMm, totalImgHeightMm);
+    } else {
+      const pxPerMm = canvas.width / contentWidthMm;
+      const pageSlicePx = Math.floor(contentHeightMm * pxPerMm);
+      let yOffsetPx = 0;
+      let pageIndex = 0;
+
+      while (yOffsetPx < canvas.height) {
+        const sliceHeightPx = Math.min(pageSlicePx, canvas.height - yOffsetPx);
+        const pageCanvas = document.createElement('canvas');
+        pageCanvas.width = canvas.width;
+        pageCanvas.height = sliceHeightPx;
+        const ctx = pageCanvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
+        ctx.drawImage(
+          canvas,
+          0,
+          yOffsetPx,
+          canvas.width,
+          sliceHeightPx,
+          0,
+          0,
+          canvas.width,
+          sliceHeightPx
+        );
+
+        if (pageIndex > 0) pdf.addPage();
+        const sliceHeightMm = sliceHeightPx / pxPerMm;
+        pdf.addImage(
+          pageCanvas.toDataURL('image/jpeg', 0.96),
+          'JPEG',
+          marginMm,
+          marginMm,
+          contentWidthMm,
+          sliceHeightMm
+        );
+
+        yOffsetPx += sliceHeightPx;
+        pageIndex++;
+      }
+    }
+
+    return pdf.output('blob');
   } finally {
     wrapper.remove();
   }
