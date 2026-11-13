@@ -56,6 +56,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -67,6 +68,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -78,6 +80,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -89,6 +92,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -100,6 +104,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -111,6 +116,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -122,6 +128,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -133,6 +140,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -144,6 +152,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -155,6 +164,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -166,6 +176,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -177,6 +188,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -188,6 +200,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -199,6 +212,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -210,6 +224,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -221,6 +236,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -232,6 +248,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -243,6 +260,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -254,6 +272,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -265,6 +284,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -276,6 +296,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -287,6 +308,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -298,6 +320,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -309,6 +332,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -320,6 +344,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -331,6 +356,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -342,6 +368,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"
@@ -353,6 +380,7 @@
       "phone": "",
       "address": "",
       "defaultSessionTypeId": "",
+      "allowedSessionTypeIds": [],
       "status": "active",
       "notes": "",
       "createdAt": "2026-11-13T08:52:00.000Z"

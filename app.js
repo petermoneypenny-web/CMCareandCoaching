@@ -95,6 +95,7 @@ const DEFAULT_SEED_DB = {
     phone: '',
     address: '',
     defaultSessionTypeId: '',
+    allowedSessionTypeIds: [],
     status: 'active',
     notes: '',
     createdAt: '2026-11-13T08:52:00.000Z'
@@ -486,6 +487,15 @@ function getSessionTypeById(id) {
   return db.sessionTypes.find((st) => st.id === id) || null;
 }
 
+function getClientAllowedSessionTypes(client) {
+  if (!client) return [];
+  const ids = new Set(Array.isArray(client.allowedSessionTypeIds) ? client.allowedSessionTypeIds : []);
+  if (client.defaultSessionTypeId) {
+    ids.add(client.defaultSessionTypeId);
+  }
+  return db.sessionTypes.filter((st) => ids.has(st.id));
+}
+
 function getSessionsForMonth(monthStr) {
   return db.sessions
     .filter((s) => (s.month || s.date.slice(0, 7)) === monthStr)
@@ -610,6 +620,7 @@ function renderTrackerView() {
           0
         );
         const defaultType = getSessionTypeById(client.defaultSessionTypeId) || null;
+        const allowedTypes = getClientAllowedSessionTypes(client);
 
         // Breakdown by session type
         const byType = {};
@@ -642,6 +653,13 @@ function renderTrackerView() {
                     <div class="client-name-link">${escapeHtml(client.name)}</div>
                     <div class="client-default-type">
                       Default: ${defaultType ? `${escapeHtml(defaultType.name)} (${formatGBP(defaultType.price)})` : 'None set'}
+                    </div>
+                    <div class="client-default-type" style="margin-top: 2px;">
+                      ${
+                        allowedTypes.length > 0
+                          ? `Allowed: ${allowedTypes.length} session type${allowedTypes.length === 1 ? '' : 's'}`
+                          : `<a href="javascript:void(0)" onclick="openClientModal('${client.id}')" style="color: var(--warning); font-weight: 600; text-decoration: underline;">Assign allowed session types</a>`
+                      }
                     </div>
                   </div>
                 </div>
@@ -781,7 +799,7 @@ function renderClientsView() {
   if (filtered.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="7" class="empty-state">No clients match your search criteria.</td>
+        <td colspan="8" class="empty-state">No clients match your search criteria.</td>
       </tr>
     `;
     return;
@@ -790,6 +808,17 @@ function renderClientsView() {
   tbody.innerHTML = filtered
     .map((c) => {
       const defType = getSessionTypeById(c.defaultSessionTypeId);
+      const allowedTypes = getClientAllowedSessionTypes(c);
+      const allowedBadgesHtml =
+        allowedTypes.length > 0
+          ? allowedTypes
+              .map(
+                (st) =>
+                  `<span class="type-pill" style="margin: 2px 4px 2px 0;"><span class="color-dot" style="background: ${st.color};"></span>${escapeHtml(st.name)}</span>`
+              )
+              .join('')
+          : `<button class="btn btn-xs btn-subtle" onclick="openClientModal('${c.id}')">+ Assign Allowed Types</button>`;
+
       const thisMonthCount = monthSessions
         .filter((s) => s.clientId === c.id)
         .reduce((sum, s) => sum + (Number(s.quantity) || 1), 0);
@@ -816,6 +845,9 @@ function renderClientsView() {
                 ? `<span class="type-pill"><span class="color-dot" style="background: ${defType.color};"></span>${escapeHtml(defType.name)} (${formatGBP(defType.price)})</span>`
                 : '—'
             }
+          </td>
+          <td style="max-width: 300px;">
+            ${allowedBadgesHtml}
           </td>
           <td>
             <strong>${thisMonthCount}</strong> session${thisMonthCount === 1 ? '' : 's'}
@@ -1307,35 +1339,106 @@ function populateSettingsForms() {
 }
 
 // CRUD Operations: Clients
-function openClientModal(clientId = null) {
-  const modal = document.getElementById('clientModal');
-  const title = document.getElementById('clientModalTitle');
+function getCheckedAllowedTypeIdsInClientModal() {
+  const checkboxes = document.querySelectorAll(
+    '#clientAllowedTypesList input[type="checkbox"]:checked'
+  );
+  return Array.from(checkboxes).map((cb) => cb.value);
+}
+
+function syncClientModalDefaultDropdown(preferredDefaultId = null) {
   const defTypeSelect = document.getElementById('clientFormDefaultType');
+  const currentDefault = preferredDefaultId !== null ? preferredDefaultId : defTypeSelect.value;
+  const checkedIds = getCheckedAllowedTypeIdsInClientModal();
+
+  // Only allow selecting a Default Session Type from the ticked Allowed Session Types
+  // (or if none are ticked yet, show all and ticking happens automatically on selection)
+  const pool =
+    checkedIds.length > 0
+      ? db.sessionTypes.filter((st) => checkedIds.includes(st.id))
+      : db.sessionTypes;
 
   defTypeSelect.innerHTML =
     `<option value="">— None —</option>` +
-    db.sessionTypes
+    pool
       .map((st) => `<option value="${st.id}">${escapeHtml(st.name)} (${formatGBP(st.price)})</option>`)
       .join('');
+
+  if (currentDefault && pool.some((st) => st.id === currentDefault)) {
+    defTypeSelect.value = currentDefault;
+  } else if (checkedIds.length === 1) {
+    defTypeSelect.value = checkedIds[0];
+  } else {
+    defTypeSelect.value = '';
+  }
+}
+
+function renderClientModalAllowedChecklist(selectedIds = [], preferredDefaultId = '') {
+  const listEl = document.getElementById('clientAllowedTypesList');
+  if (!listEl) return;
+
+  const selectedSet = new Set(selectedIds);
+  if (preferredDefaultId) selectedSet.add(preferredDefaultId);
+
+  if (db.sessionTypes.length === 0) {
+    listEl.innerHTML = `<div style="color: var(--text-muted); font-size: 0.82rem; padding: 0.4rem;">No session types created yet.</div>`;
+    syncClientModalDefaultDropdown('');
+    return;
+  }
+
+  listEl.innerHTML = db.sessionTypes
+    .map((st) => {
+      const isChecked = selectedSet.has(st.id);
+      return `
+        <label class="allowed-type-item ${isChecked ? 'checked' : ''}">
+          <span class="allowed-type-left">
+            <input type="checkbox" value="${st.id}" ${isChecked ? 'checked' : ''} />
+            <span class="color-dot" style="background: ${st.color || '#2563eb'};"></span>
+            <span>${escapeHtml(st.name)}</span>
+          </span>
+          <span class="allowed-type-price">${formatGBP(st.price)}</span>
+        </label>
+      `;
+    })
+    .join('');
+
+  listEl.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+    cb.addEventListener('change', () => {
+      const labelItem = cb.closest('.allowed-type-item');
+      if (labelItem) labelItem.classList.toggle('checked', cb.checked);
+      syncClientModalDefaultDropdown();
+    });
+  });
+
+  syncClientModalDefaultDropdown(preferredDefaultId);
+}
+
+function openClientModal(clientId = null) {
+  const modal = document.getElementById('clientModal');
+  const title = document.getElementById('clientModalTitle');
 
   if (clientId) {
     const client = getClientById(clientId);
     if (!client) return;
-    title.textContent = 'Edit Client';
+    title.textContent = `Edit Client — ${client.name}`;
     document.getElementById('clientFormId').value = client.id;
     document.getElementById('clientFormName').value = client.name || '';
     document.getElementById('clientFormEmail').value = client.email || '';
     document.getElementById('clientFormPhone').value = client.phone || '';
     document.getElementById('clientFormAddress').value = client.address || '';
-    document.getElementById('clientFormDefaultType').value = client.defaultSessionTypeId || '';
     document.getElementById('clientFormStatus').value = client.status || 'active';
     document.getElementById('clientFormNotes').value = client.notes || '';
+
+    const allowedIds = Array.isArray(client.allowedSessionTypeIds)
+      ? client.allowedSessionTypeIds
+      : [];
+    renderClientModalAllowedChecklist(allowedIds, client.defaultSessionTypeId || '');
   } else {
     title.textContent = 'Add New Client';
     document.getElementById('clientForm').reset();
     document.getElementById('clientFormId').value = '';
-    document.getElementById('clientFormDefaultType').value = '';
     document.getElementById('clientFormStatus').value = 'active';
+    renderClientModalAllowedChecklist([], '');
   }
 
   modal.classList.add('open');
@@ -1397,6 +1500,72 @@ function deleteSessionType(typeId) {
 }
 
 // CRUD Operations: Sessions
+function populateSessionModalTypesForClient(clientId, currentSessionTypeId = null) {
+  const client = getClientById(clientId);
+  const typeSelect = document.getElementById('sessionFormType');
+  const noticeEl = document.getElementById('sessionAllowedTypesNotice');
+  const saveBtn = document.getElementById('sessionSaveBtn');
+
+  let allowedTypes = getClientAllowedSessionTypes(client);
+
+  // If editing an existing session whose type was previously logged, ensure it remains selectable
+  if (currentSessionTypeId && !allowedTypes.some((st) => st.id === currentSessionTypeId)) {
+    const existingSt = getSessionTypeById(currentSessionTypeId);
+    if (existingSt) {
+      allowedTypes = [...allowedTypes, existingSt];
+    }
+  }
+
+  if (allowedTypes.length === 0) {
+    typeSelect.innerHTML = `<option value="">— No allowed session types assigned to ${escapeHtml(client ? client.name : 'client')} —</option>`;
+    typeSelect.disabled = true;
+    document.getElementById('sessionFormPrice').value = '';
+    if (saveBtn) saveBtn.disabled = true;
+    if (noticeEl) {
+      noticeEl.style.display = 'flex';
+      noticeEl.className = 'session-type-restriction-notice';
+      noticeEl.innerHTML = `
+        <span>No session types are assigned to <strong>${escapeHtml(client ? client.name : 'this client')}</strong> yet. Assign their allowed session types first to prevent logging errors.</span>
+        <button type="button" class="btn btn-xs btn-primary" onclick="document.getElementById('sessionModal').classList.remove('open'); openClientModal('${client ? client.id : ''}')">
+          Assign Session Types
+        </button>
+      `;
+    }
+    return;
+  }
+
+  typeSelect.disabled = false;
+  if (saveBtn) saveBtn.disabled = false;
+
+  typeSelect.innerHTML = allowedTypes
+    .map((st) => `<option value="${st.id}">${escapeHtml(st.name)} (${formatGBP(st.price)})</option>`)
+    .join('');
+
+  const preferredId =
+    currentSessionTypeId && allowedTypes.some((st) => st.id === currentSessionTypeId)
+      ? currentSessionTypeId
+      : client?.defaultSessionTypeId && allowedTypes.some((st) => st.id === client.defaultSessionTypeId)
+        ? client.defaultSessionTypeId
+        : allowedTypes[0].id;
+
+  typeSelect.value = preferredId;
+  const chosenSt = getSessionTypeById(preferredId);
+  if (chosenSt && !currentSessionTypeId) {
+    document.getElementById('sessionFormPrice').value = chosenSt.price;
+  }
+
+  if (noticeEl) {
+    noticeEl.style.display = 'flex';
+    noticeEl.className = '';
+    noticeEl.style.cssText =
+      'display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; color: var(--text-muted); margin-top: 0.3rem;';
+    noticeEl.innerHTML = `
+      <span>Showing ${allowedTypes.length} allowed session type${allowedTypes.length === 1 ? '' : 's'} assigned to <strong>${escapeHtml(client.name)}</strong>.</span>
+      <a href="javascript:void(0)" onclick="document.getElementById('sessionModal').classList.remove('open'); openClientModal('${client.id}')" style="color: var(--primary); font-weight: 600; text-decoration: none;">Edit client's allowed types &rarr;</a>
+    `;
+  }
+}
+
 function openSessionModal(sessionId = null, prefillClientId = null) {
   if (db.clients.length === 0) {
     showToast('Please add a client first before logging a session.', 'error');
@@ -1412,14 +1581,9 @@ function openSessionModal(sessionId = null, prefillClientId = null) {
   const modal = document.getElementById('sessionModal');
   const title = document.getElementById('sessionModalTitle');
   const clientSelect = document.getElementById('sessionFormClient');
-  const typeSelect = document.getElementById('sessionFormType');
 
   clientSelect.innerHTML = db.clients
     .map((c) => `<option value="${c.id}">${escapeHtml(c.name)}</option>`)
-    .join('');
-
-  typeSelect.innerHTML = db.sessionTypes
-    .map((st) => `<option value="${st.id}">${escapeHtml(st.name)} (${formatGBP(st.price)})</option>`)
     .join('');
 
   if (sessionId) {
@@ -1428,7 +1592,7 @@ function openSessionModal(sessionId = null, prefillClientId = null) {
     title.textContent = 'Edit Logged Session';
     document.getElementById('sessionFormId').value = ses.id;
     clientSelect.value = ses.clientId;
-    typeSelect.value = ses.sessionTypeId;
+    populateSessionModalTypesForClient(ses.clientId, ses.sessionTypeId);
     document.getElementById('sessionFormDate').value = ses.date;
     document.getElementById('sessionFormQty').value = ses.quantity || 1;
     document.getElementById('sessionFormPrice').value = ses.unitPrice;
@@ -1440,16 +1604,8 @@ function openSessionModal(sessionId = null, prefillClientId = null) {
 
     const chosenClientId = prefillClientId || db.clients[0].id;
     clientSelect.value = chosenClientId;
+    populateSessionModalTypesForClient(chosenClientId, null);
 
-    const clientObj = getClientById(chosenClientId);
-    const defaultTypeId =
-      clientObj?.defaultSessionTypeId && getSessionTypeById(clientObj.defaultSessionTypeId)
-        ? clientObj.defaultSessionTypeId
-        : db.sessionTypes[0].id;
-    typeSelect.value = defaultTypeId;
-
-    const stObj = getSessionTypeById(defaultTypeId);
-    document.getElementById('sessionFormPrice').value = stObj ? stObj.price : 45;
     document.getElementById('sessionFormQty').value = 1;
 
     // Default date inside activeMonth if activeMonth is not current month
@@ -1467,9 +1623,30 @@ function openSessionModal(sessionId = null, prefillClientId = null) {
 function quickIncrementSession(clientId) {
   const client = getClientById(clientId);
   if (!client) return;
-  const st =
-    getSessionTypeById(client.defaultSessionTypeId) ||
-    db.sessionTypes[0] || { id: 'custom', name: 'Personal Training', price: 45 };
+
+  const allowedTypes = getClientAllowedSessionTypes(client);
+  if (allowedTypes.length === 0) {
+    showToast(
+      `Please assign allowed session types for ${client.name} first to prevent logging errors.`,
+      'error'
+    );
+    openClientModal(client.id);
+    return;
+  }
+
+  const defaultSt =
+    (client.defaultSessionTypeId &&
+      allowedTypes.find((st) => st.id === client.defaultSessionTypeId)) ||
+    (allowedTypes.length === 1 ? allowedTypes[0] : null);
+
+  if (!defaultSt) {
+    showToast(
+      `${client.name} has multiple allowed session types and no default set — choose the session type to log.`,
+      'success'
+    );
+    openSessionModal(null, client.id);
+    return;
+  }
 
   const today = getTodayDateString();
   const sessionDate = today.startsWith(activeMonth) ? today : `${activeMonth}-15`;
@@ -1477,15 +1654,15 @@ function quickIncrementSession(clientId) {
   db.sessions.push({
     id: uid('ses'),
     clientId: client.id,
-    sessionTypeId: st.id,
+    sessionTypeId: defaultSt.id,
     date: sessionDate,
     month: activeMonth,
     quantity: 1,
-    unitPrice: Number(st.price) || 0,
+    unitPrice: Number(defaultSt.price) || 0,
     notes: 'Quick +1 session logged'
   });
 
-  saveAndRefresh(`+1 session logged for ${client.name} (${formatMonthDisplay(activeMonth)})`);
+  saveAndRefresh(`+1 ${defaultSt.name} logged for ${client.name} (${formatMonthDisplay(activeMonth)})`);
 }
 
 function deleteSession(sessionId) {
@@ -1535,16 +1712,9 @@ function bindEvents() {
     });
   });
 
-  // Auto-update session form rate when client or session type changes
+  // Auto-update session form allowed types & rate when client or session type changes
   document.getElementById('sessionFormClient').addEventListener('change', (e) => {
-    const client = getClientById(e.target.value);
-    if (client && client.defaultSessionTypeId) {
-      const st = getSessionTypeById(client.defaultSessionTypeId);
-      if (st) {
-        document.getElementById('sessionFormType').value = st.id;
-        document.getElementById('sessionFormPrice').value = st.price;
-      }
-    }
+    populateSessionModalTypesForClient(e.target.value, null);
   });
 
   document.getElementById('sessionFormType').addEventListener('change', (e) => {
@@ -1554,16 +1724,58 @@ function bindEvents() {
     }
   });
 
+  // Client Modal Allowed Session Types Select All / Clear All / Default sync
+  document.getElementById('clientAllowedSelectAllBtn').addEventListener('click', () => {
+    document
+      .querySelectorAll('#clientAllowedTypesList input[type="checkbox"]')
+      .forEach((cb) => {
+        cb.checked = true;
+        cb.closest('.allowed-type-item')?.classList.add('checked');
+      });
+    syncClientModalDefaultDropdown();
+  });
+
+  document.getElementById('clientAllowedClearAllBtn').addEventListener('click', () => {
+    document
+      .querySelectorAll('#clientAllowedTypesList input[type="checkbox"]')
+      .forEach((cb) => {
+        cb.checked = false;
+        cb.closest('.allowed-type-item')?.classList.remove('checked');
+      });
+    syncClientModalDefaultDropdown('');
+  });
+
+  document.getElementById('clientFormDefaultType').addEventListener('change', (e) => {
+    const selectedDefault = e.target.value;
+    if (selectedDefault) {
+      const cb = document.querySelector(
+        `#clientAllowedTypesList input[type="checkbox"][value="${selectedDefault}"]`
+      );
+      if (cb && !cb.checked) {
+        cb.checked = true;
+        cb.closest('.allowed-type-item')?.classList.add('checked');
+        syncClientModalDefaultDropdown(selectedDefault);
+      }
+    }
+  });
+
   // Form Submits: Client
   document.getElementById('clientForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const id = document.getElementById('clientFormId').value;
+    const defaultSessionTypeId = document.getElementById('clientFormDefaultType').value;
+    const allowedSet = new Set(getCheckedAllowedTypeIdsInClientModal());
+    if (defaultSessionTypeId) {
+      allowedSet.add(defaultSessionTypeId);
+    }
+
     const payload = {
       name: document.getElementById('clientFormName').value.trim(),
       email: document.getElementById('clientFormEmail').value.trim(),
       phone: document.getElementById('clientFormPhone').value.trim(),
       address: document.getElementById('clientFormAddress').value.trim(),
-      defaultSessionTypeId: document.getElementById('clientFormDefaultType').value,
+      defaultSessionTypeId,
+      allowedSessionTypeIds: Array.from(allowedSet),
       status: document.getElementById('clientFormStatus').value,
       notes: document.getElementById('clientFormNotes').value.trim()
     };
@@ -1619,12 +1831,17 @@ function bindEvents() {
   document.getElementById('sessionForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const id = document.getElementById('sessionFormId').value;
+    const sessionTypeId = document.getElementById('sessionFormType').value;
+    if (!sessionTypeId) {
+      showToast('Please assign allowed session types to this client first.', 'error');
+      return;
+    }
     const dateVal = document.getElementById('sessionFormDate').value;
     const monthVal = dateVal.slice(0, 7);
 
     const payload = {
       clientId: document.getElementById('sessionFormClient').value,
-      sessionTypeId: document.getElementById('sessionFormType').value,
+      sessionTypeId,
       date: dateVal,
       month: monthVal,
       quantity: Math.max(1, Number(document.getElementById('sessionFormQty').value) || 1),
