@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "lastUpdated": "2026-11-19T07:14:40.890Z",
+  "lastUpdated": "2026-11-19T07:14:59.918Z",
   "businessProfile": {
     "name": "CM Care and Coaching",
     "tagline": "Personal Training & Rehab Coaching",
@@ -780,6 +780,16 @@
       "date": "2026-11-19",
       "month": "2026-11",
       "quantity": 1,
+      "unitPrice": 43.5,
+      "notes": ""
+    },
+    {
+      "id": "ses_mwn7tgb2_hg6b",
+      "clientId": "cl_4",
+      "sessionTypeId": "st_1",
+      "date": "2026-11-19",
+      "month": "2026-11",
+      "quantity": 2,
       "unitPrice": 43.5,
       "notes": ""
     }
