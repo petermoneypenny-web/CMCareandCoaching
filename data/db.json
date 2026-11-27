@@ -1,18 +1,18 @@
 {
   "version": 2,
-  "lastUpdated": "2026-11-27T05:51:45.826Z",
+  "lastUpdated": "2026-11-27T08:55:25.178Z",
   "businessProfile": {
     "name": "CM Care and Coaching",
-    "tagline": "Personal Training & Rehab Coaching",
     "initials": "CM",
+    "tagline": "Personal Training & Rehab Coaching",
     "email": "cmcareandcoaching@gmail.com",
     "phone": "07544390168",
     "address": "United Kingdom",
-    "bankAccountName": "CM Care and Coaching",
-    "bankName": "Monzo / High Street Bank",
-    "sortCode": "00-00-00",
-    "accountNumber": "12345678",
-    "paymentTerms": "Payment due within 14 days of invoice date. Please use the invoice number as your payment reference. Thank you for training with CM Care and Coaching!"
+    "bankName": "TSB",
+    "bankAccountName": "Christine Moneypenny",
+    "sortCode": "77-20-24",
+    "accountNumber": "50027160",
+    "paymentTerms": "Please make the payment by the due date. \nSessions cancelled within 24 hours will be charged\n\nThank you 😀️"
   },
   "sessionTypes": [
     {
